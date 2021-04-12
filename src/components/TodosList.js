@@ -4,10 +4,12 @@ import TodosContext from "../context";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(TodosContext);
-  const title =
-    state.todos.length > 0
-      ? `${state.todos.length} Conta(s) a pagar regitrada(s)`
-      : "Nenhuma conta registrada";
+  // const title = state.todos.length > 0 ? `${state.todos.length} Conta(s) a pagar regitrada(s)` : "Nenhuma conta registrada";
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1;
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+  const today = year + "/" + month + "/" + day;
 
   const naoPagos = state.todos.reduce(function (sum, todo) {
     return !todo.complete && todo.tipo === "Pagar" ? sum + 1 : sum;
@@ -23,10 +25,8 @@ export default function TodoList() {
     } else if (todo.tipo === "Pagar" && todo.complete) {
       sum = sum - parseFloat(todo.price);
     }
-    console.log("sum: ", sum);
     return sum;
   }, 0);
-  console.log("saldo: ", saldo);
 
   const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
 
@@ -36,22 +36,23 @@ export default function TodoList() {
   });
 
   return (
-    <div className="container mx-auto max-w-lg text-center font-mono border-grey border-2 rounded">
-      <h1 className="font-bold">{title}</h1>
+    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded">
+      {/* <h1 className="font-bold">{title}</h1> */}
       <ul className="list-reset text-white p-2">
         <li className="text-black flex">
           <span className="flex-1">Descrição</span>
-          <span className="flex-1">Tipo de conta</span>
+          <span className="flex-1">Tipo da conta</span>
+          <span className="flex-1">Vencimento</span>
           <span className="flex-1">Valor</span>
           <span>Ações</span>
         </li>
         {state.todos.map((todo) => (
           <li
             key={todo.id}
-            className={`rounded cursor-pointer flex items-center bg-yellow-700 border-grey border-dotted border-2 my-1 py-4 
-            ${todo.complete && "bg-green-700"}
-            ${todo.tipo === "Receber" && "bg-blue-400"}
-            ${todo.tipo === "Receber" && todo.complete && "bg-blue-800"}
+            className={`rounded cursor-pointer flex items-center bg-yellow-700 border-grey border-dotted border-2 my-1 py-4            
+            ${todo.complete && "bg-yellow-900"}
+            ${todo.tipo === "Receber" && "bg-blue-700"}
+            ${todo.tipo === "Receber" && todo.complete && "bg-blue-900"}
             `}
             onDoubleClick={async () => {
               const response = await axios.patch(
@@ -63,6 +64,14 @@ export default function TodoList() {
           >
             <span className="flex-1">{todo.text}</span>
             <span className="flex-1">{todo.tipo}</span>
+            <span
+              className={`flex-1 ${
+                Date.parse(today) > Date.parse(todo.dataVencimento) &&
+                "text-red-500 font-bold"
+              }`}
+            >
+              {todo.dataVencimento}
+            </span>
             <span className="flex-1">{formatter.format(todo.price)}</span>
             <button
               className="mr-2"
@@ -86,7 +95,8 @@ export default function TodoList() {
           </li>
         ))}
       </ul>
-      <div>Saldo atual: {formatter.format(saldo)}</div> <div>{footerText}</div>
+      <div className="font-bold">Saldo atual: {formatter.format(saldo)}</div>{" "}
+      <div>{footerText}</div>
     </div>
   );
 }

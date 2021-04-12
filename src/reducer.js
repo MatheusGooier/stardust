@@ -32,8 +32,6 @@ export default function reducer(state, action) {
         todos: addedTodos,
       };
     case "SET_CURRENT_TODO":
-      console.log("state: ", state);
-      console.log("action.payload: ", action.payload);
       return {
         ...state,
         currentTodo: action.payload,
