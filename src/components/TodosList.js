@@ -49,9 +49,9 @@ export default function TodoList() {
         {state.todos.map((todo) => (
           <li
             key={todo.id}
-            className={`rounded cursor-pointer flex items-center bg-yellow-700 border-grey border-dotted border-2 my-1 py-4            
+            className={`rounded cursor-pointer flex items-center bg-yellow-600 border-grey border-dotted border-2 my-1 py-4            
             ${todo.complete && "bg-yellow-900"}
-            ${todo.tipo === "Receber" && "bg-blue-700"}
+            ${todo.tipo === "Receber" && "bg-blue-600"}
             ${todo.tipo === "Receber" && todo.complete && "bg-blue-900"}
             `}
             onDoubleClick={async () => {

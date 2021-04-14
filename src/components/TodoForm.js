@@ -41,7 +41,6 @@ export default function TodoForm() {
   }, [currentTodo.id, currentTodo]);
 
   function updCCcheckbox(value) {
-    console.log("savedCentroCustos:", savedCentroCustos);
     for (let key in savedCentroCustos) {
       if (document.getElementById(`ccId${savedCentroCustos[key].titulo}`)) {
         document.getElementById(
@@ -50,7 +49,6 @@ export default function TodoForm() {
       }
     }
 
-    console.log("value: ", value);
     for (let key in value) {
       document.getElementById(`ccId${value[key]}`).checked = true;
       let temp = CentroCustoMarcados;
@@ -60,9 +58,6 @@ export default function TodoForm() {
   }
 
   const handleSubmit = async (event) => {
-    console.log("[...CentroCustoMarcados.keys()]: ", [
-      ...CentroCustoMarcados.keys(),
-    ]);
     event.preventDefault();
     if (currentTodo.text) {
       const reponse = await axios.patch(
@@ -94,6 +89,14 @@ export default function TodoForm() {
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
     setTodo("");
+    updCCcheckbox("");
+    setCentroCustoMarcados(new Map());
+  };
+
+  const HandleClear = (e) => {
+    setTodo("");
+    updCCcheckbox("");
+    setCentroCustoMarcados(new Map());
   };
 
   //Lista de centro de custos selecionados
@@ -123,7 +126,7 @@ export default function TodoForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="justify-center p-5 mx-auto max-w-md font-mono border-grey border-2 m-6"
+      className="justify-center px-4 mx-auto max-w-md font-mono border-grey border-2 m-2"
       id="formTodo"
     >
       <p className="mt-2 ">Título</p>
@@ -155,7 +158,7 @@ export default function TodoForm() {
             value={todo.price || ""}
           ></input>
         </p>
-        <p className="mt-1">
+        <p className="flex-1 mt-1">
           Tipo da conta:<br></br>
           <input
             type="radio"
@@ -206,7 +209,7 @@ export default function TodoForm() {
           </li>
         ))}
       </ul>
-      <br></br>
+
       <button
         type="submit"
         form="formTodo"
@@ -216,11 +219,7 @@ export default function TodoForm() {
         Salvar
       </button>
       <button
-        onClick={(e) => {
-          setTodo({ ...todo });
-          updCCcheckbox(currentTodo.centroCusto);
-          setCentroCustoMarcados(new Map());
-        }}
+        onClick={HandleClear}
         type="button"
         form="formTodo"
         className="text-white rounded cursor-pointer items-center bg-yellow-800 border-2 my-4 py-1 px-6"

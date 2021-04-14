@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "react": "0.0.0-1214b302e",
     "react-dom": "0.0.0-1214b302e",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.7",
