@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 import Axios from "axios";
 import reportWebVitals from "./reportWebVitals";
-import TodosContext from "./context";
-import todosReducer from "./reducer";
+import TodosContext from "./components/contexts/todoContext";
+
+import todosReducer from "./components/reducers/todoReducer";
+
 import TodoList from "./components/TodosList";
 import TodoForm from "./components/TodoForm";
 
@@ -18,13 +20,12 @@ const useAPI = (endpoint) => {
     const response = await Axios.get(endpoint);
     setData(response.data);
   };
-
   return data;
 };
 
 const App = () => {
-  const initialState = useContext(TodosContext);
-  const [state, dispatch] = useReducer(todosReducer, initialState);
+  const todoInitialState = useContext(TodosContext);
+  const [state, dispatch] = useReducer(todosReducer, todoInitialState);
   const savedTodos = useAPI(
     "https://hooks-api-matheusalex-hotmailcom.vercel.app/todos"
   );

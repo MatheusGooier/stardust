@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext } from "react";
-import TodosContext from "../context";
+import TodosContext from "./contexts/todoContext";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(TodosContext);
