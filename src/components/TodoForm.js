@@ -59,7 +59,7 @@ export default function TodoForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (currentTodo.text) {
+    if (currentTodo.titulo) {
       const reponse = await axios.patch(
         `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${currentTodo.id}`,
         {

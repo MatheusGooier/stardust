@@ -5,7 +5,7 @@ import CentroCustoContext from "./contexts/centroCustoContext";
 import axios from "axios";
 
 export default function CcForm() {
-  //Criação do currentTodo
+  //Criação do centroCusto
   const [centroCusto, setCentroCusto] = useState("");
   const {
     state: { currentCentroCusto = {} },
@@ -20,10 +20,36 @@ export default function CcForm() {
     }
   }, [currentCentroCusto.id, currentCentroCusto]);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (currentCentroCusto.titulo) {
+      const reponse = await axios.patch(
+        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${currentCentroCusto.id}`,
+        {
+          titulo: centroCusto.titulo || "Sem título",
+          tipo: centroCusto.tipo,
+        }
+      );
+      dispatch({ type: "UPDATE_CC", payload: reponse.data });
+    } else {
+      const response = await axios.post(
+        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/`,
+        {
+          id: uuid(),
+          titulo: centroCusto.titulo || "Sem título",
+          tipo: centroCusto.tipo,
+        }
+      );
+      dispatch({ type: "ADD_TODO", payload: response.data });
+    }
+    setCentroCusto("");
+  };
+
   return (
     <form
       className="justify-center px-4 mx-auto max-w-md font-mono border-grey border-2 m-2"
       id="formCentroCusto"
+      onSubmit={handleSubmit}
     >
       <p className="mt-2 ">Descrição</p>
       <input

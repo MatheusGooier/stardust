@@ -22,20 +22,20 @@ export default function TodoList() {
             <span className="flex-1">
               <button
                 className="mr-2"
-                // onClick={() =>
-                //   dispatch({ type: "SET_CURRENT_TODO", payload: todo })
-                // }
+                onClick={() =>
+                  dispatch({ type: "SET_CURRENT_CC", payload: cc })
+                }
               >
                 <i className="fa fa-edit"></i>
               </button>
               <button
                 className="mr-2"
-                // onClick={async () => {
-                //   await axios.delete(
-                //     `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${todo.id}`
-                //   );
-                //   dispatch({ type: "REMOVE_TODO", payload: todo });
-                // }}
+                onClick={async () => {
+                  await axios.delete(
+                    `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${cc.id}`
+                  );
+                  dispatch({ type: "REMOVE_CC", payload: cc });
+                }}
               >
                 <i className="fa fa-remove"></i>
               </button>

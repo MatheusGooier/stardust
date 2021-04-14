@@ -38,7 +38,7 @@ export default function ccPage() {
 
     useEffect(() => {
       dispatch({
-        type: "GET_CCS",
+        type: "GET_CC",
         payload: savedCc,
       });
     }, [savedCc]);

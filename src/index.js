@@ -28,10 +28,9 @@ const App = () => {
   return (
     <BrowserRouter className="bg-gray-600">
       <Menu />
-      <Switch>
-        <Route path="/" exact={true} component={TodoPage} />
-        <Route path="/cc" component={CcPage} />
-      </Switch>
+
+      <Route path="/" exact={true} component={TodoPage} />
+      <Route path="/cc" component={CcPage} />
     </BrowserRouter>
   );
 };
