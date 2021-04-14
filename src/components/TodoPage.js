@@ -26,8 +26,6 @@ export default function TodoPage() {
     const savedTodos = useAPI(
       "https://hooks-api-matheusalex-hotmailcom.vercel.app/todos"
     );
-
-    console.log("todos:", savedTodos);
     useEffect(() => {
       dispatch({
         type: "GET_TODOS",

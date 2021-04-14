@@ -1,7 +1,4 @@
 export default function reducer(state, action) {
-  console.log("ccReducer => state", state);
-  console.log("ccReducer => action", action);
-  console.log("ccReducer => action.payload", action.payload);
   switch (action.type) {
     case "GET_CC":
       return {
@@ -30,7 +27,6 @@ export default function reducer(state, action) {
         centroCustos: addedCCs,
       };
     case "SET_CURRENT_CC":
-      console.log("SET_CURRENT_CC - action.payload", action.payload);
       return {
         ...state,
         currentCentroCusto: action.payload,

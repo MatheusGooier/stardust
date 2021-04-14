@@ -1,6 +1,4 @@
 export default function reducer(state, action) {
-  console.log("action.payload: ", action.payload);
-  console.log("action.type: ", action.type);
   switch (action.type) {
     case "GET_TODOS":
       return {

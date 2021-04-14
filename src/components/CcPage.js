@@ -17,10 +17,6 @@ export default function ccPage() {
       const response = await axios.get(endpoint);
       setData(response.data);
     };
-    console.log(
-      "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto response.data:",
-      data
-    );
     return data;
   };
 
@@ -34,7 +30,6 @@ export default function ccPage() {
     const savedCc = useAPI(
       "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto"
     );
-    console.log("savedCc:", savedCc);
 
     useEffect(() => {
       dispatch({

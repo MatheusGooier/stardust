@@ -4,7 +4,6 @@ import CentroCustoContext from "./contexts/centroCustoContext";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(CentroCustoContext);
-  console.log("state.centroCustos:", state.centroCustos);
 
   return (
     <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded">

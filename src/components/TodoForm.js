@@ -113,12 +113,10 @@ export default function TodoForm() {
     } else {
       temp.delete(event.target.value);
     }
-    console.log("setCentroCustoMarcados(temp);", CentroCustoMarcados);
     setCentroCustoMarcados(temp);
   };
 
   const isCentroCustoChecked = (event) => {
-    console.log("event:", event);
     if ([todo.centroCusto].includes(event.target.value)) {
     }
   };
