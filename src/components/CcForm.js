@@ -25,7 +25,7 @@ export default function CcForm() {
     event.preventDefault();
     if (currentCentroCusto.titulo) {
       const reponse = await axios.patch(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${currentCentroCusto.id}`,
+        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/${currentCentroCusto.id}`,
         {
           titulo: centroCusto.titulo || "Sem título",
           tipo: centroCusto.tipo,
@@ -34,14 +34,14 @@ export default function CcForm() {
       dispatch({ type: "UPDATE_CC", payload: reponse.data });
     } else {
       const response = await axios.post(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/`,
+        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/`,
         {
           id: uuid(),
           titulo: centroCusto.titulo || "Sem título",
           tipo: centroCusto.tipo,
         }
       );
-      dispatch({ type: "ADD_TODO", payload: response.data });
+      dispatch({ type: "ADD_CC", payload: response.data });
     }
     setCentroCusto("");
   };

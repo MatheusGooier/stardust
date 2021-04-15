@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useContext } from "react";
 import TodosContext from "./contexts/todoContext";
-import { Table, Tag, Space } from "antd";
+import { Table, Space } from "antd";
+// import { Table, Tag, Space } from "antd";
 import "antd/dist/antd.css";
 
 export default function TodoList() {
@@ -41,14 +42,14 @@ export default function TodoList() {
       key: "action",
       render: (text, record) => (
         <Space size="middle" key={record.id}>
-          <a
+          <span
             onClick={() =>
               dispatch({ type: "SET_CURRENT_TODO", payload: record })
             }
           >
             Editar
-          </a>
-          <a
+          </span>
+          <span
             onClick={async () => {
               await axios.delete(
                 `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`
@@ -57,25 +58,19 @@ export default function TodoList() {
             }}
           >
             Remover
-          </a>
+          </span>
         </Space>
       ),
     },
   ];
 
-  var dateObj = new Date();
-  var month = dateObj.getUTCMonth() + 1;
-  var day = dateObj.getUTCDate();
-  var year = dateObj.getUTCFullYear();
-  const today = year + "/" + month + "/" + day;
+  // const naoPagos = state.todos.reduce(function (sum, todo) {
+  //   return !todo.complete && todo.tipo === "Pagar" ? sum + 1 : sum;
+  // }, 0);
 
-  const naoPagos = state.todos.reduce(function (sum, todo) {
-    return !todo.complete && todo.tipo === "Pagar" ? sum + 1 : sum;
-  }, 0);
-
-  const naoRecebidos = state.todos.reduce(function (sum, todo) {
-    return !todo.complete && todo.tipo === "Receber" ? sum + 1 : sum;
-  }, 0);
+  // const naoRecebidos = state.todos.reduce(function (sum, todo) {
+  //   return !todo.complete && todo.tipo === "Receber" ? sum + 1 : sum;
+  // }, 0);
 
   const saldo = state.todos.reduce(function (sum, todo) {
     if (todo.tipo === "Receber" && todo.complete) {
@@ -89,7 +84,7 @@ export default function TodoList() {
   // const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
 
   return (
-    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded p-2 ">
+    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded p-2 mt-2">
       <Table
         columns={columns}
         dataSource={state.todos}
@@ -98,7 +93,7 @@ export default function TodoList() {
           expandedRowRender: (record) => (
             <div className="flex justify-between">
               <p className="flex-1">{record.text}</p>
-              <a
+              <span
                 onClick={async () => {
                   const response = await axios.patch(
                     `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`,
@@ -108,7 +103,7 @@ export default function TodoList() {
                 }}
               >
                 {record.complete ? "Cancelar pagamento" : "Concluír pagamento"}
-              </a>
+              </span>
             </div>
           ),
           rowExpandable: (record) => record.text !== "",

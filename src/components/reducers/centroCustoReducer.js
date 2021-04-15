@@ -20,7 +20,7 @@ export default function reducer(state, action) {
         currentCentroCusto: {},
         centroCustos: updatedCentroCustos,
       };
-    case "ADD_TODO":
+    case "ADD_CC":
       const addedCCs = [...state.centroCustos, action.payload];
       return {
         ...state,

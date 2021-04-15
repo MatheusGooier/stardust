@@ -35,8 +35,8 @@ export default function TodoPage() {
 
     return (
       <TodosContext.Provider value={{ state, dispatch }}>
-        <TodoForm />
         <TodoList />
+        <TodoForm />
       </TodosContext.Provider>
     );
   };

@@ -11,7 +11,6 @@ export default function CcList() {
       title: "Descrição",
       dataIndex: "titulo",
       key: "titulo",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Tipo",
@@ -23,30 +22,30 @@ export default function CcList() {
       key: "id",
       render: (text, record) => (
         <Space size="middle" key={record.id}>
-          <a
+          <span
             onClick={() =>
               dispatch({ type: "SET_CURRENT_CC", payload: record })
             }
           >
             Editar {record.name}
-          </a>
-          <a
+          </span>
+          <span
             onClick={async () => {
               await axios.delete(
-                `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${record.id}`
+                `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/${record.id}`
               );
               dispatch({ type: "REMOVE_CC", payload: record });
             }}
           >
             Remover
-          </a>
+          </span>
         </Space>
       ),
     },
   ];
 
   return (
-    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded">
+    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded mt-2">
       <Table
         columns={columns}
         dataSource={state.centroCustos}

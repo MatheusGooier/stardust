@@ -3,7 +3,7 @@ import { uuid } from "uuidv4";
 import React from "react";
 import TodosContext from "./contexts/todoContext";
 import axios from "axios";
-import { Button } from "antd";
+import { Button, Form, Input } from "antd";
 
 export default function TodoForm() {
   //Busca o centro de custo
@@ -22,7 +22,7 @@ export default function TodoForm() {
   };
 
   const savedCentroCustos = useAPI(
-    "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto"
+    "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos"
   );
 
   //Criação do currentTodo
@@ -123,19 +123,19 @@ export default function TodoForm() {
   };
 
   return (
-    <form
+    <Form
       onSubmit={handleSubmit}
       className="justify-center px-4 mx-auto max-w-md font-mono border-grey border-2 m-2"
       id="formTodo"
     >
       <p className="mt-2 ">Título</p>
-      <input
+      <Input
         type="text"
         placeholder=""
         className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
         onChange={(event) => setTodo({ ...todo, titulo: event.target.value })}
         value={todo.titulo || ""}
-      ></input>
+      ></Input>
       <p className="mt-2">Descrição</p>
       <textarea
         rows="2"
@@ -146,7 +146,7 @@ export default function TodoForm() {
       <div className="flex">
         <p className="flex-1 ">
           Valor
-          <input
+          <Input
             id="valor"
             placeholder=" R$ 0,00"
             type="number"
@@ -155,11 +155,11 @@ export default function TodoForm() {
               setTodo({ ...todo, price: event.target.value })
             }
             value={todo.price || ""}
-          ></input>
+          ></Input>
         </p>
         <p className="flex-1 mt-1">
           Tipo da conta:<br></br>
-          <input
+          <Input
             type="radio"
             id="pagar"
             checked={todo.tipo === "Pagar"}
@@ -169,7 +169,7 @@ export default function TodoForm() {
             onChange={(event) => setTodo({ ...todo, tipo: event.target.value })}
           />
           Pagar
-          <input
+          <Input
             type="radio"
             id="receber"
             checked={todo.tipo === "Receber"}
@@ -182,7 +182,7 @@ export default function TodoForm() {
         </p>
       </div>
       <p className="mt-2">Vencimento</p>
-      <input
+      <Input
         id="date"
         type="date"
         value={todo.dataVencimento || ""}
@@ -190,13 +190,13 @@ export default function TodoForm() {
         onChange={(event) =>
           setTodo({ ...todo, dataVencimento: event.target.value })
         }
-      ></input>
+      ></Input>
 
       <p className="mt-2">Centro de custos:</p>
       <ul>
         {savedCentroCustos.map((CentroCusto) => (
           <li key={CentroCusto.id}>
-            <input
+            <Input
               type="checkbox"
               id={`ccId${CentroCusto.titulo}`}
               className="ml-2 checkbox"
@@ -227,6 +227,6 @@ export default function TodoForm() {
       >
         Limpar
       </Button>
-    </form>
+    </Form>
   );
 }

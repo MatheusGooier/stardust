@@ -28,7 +28,7 @@ export default function ccPage() {
     );
 
     const savedCc = useAPI(
-      "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto"
+      "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos"
     );
 
     useEffect(() => {
@@ -40,8 +40,8 @@ export default function ccPage() {
 
     return (
       <CentroCustoContext.Provider value={{ state, dispatch }}>
-        <CcForm />
         <CcList />
+        <CcForm />
       </CentroCustoContext.Provider>
     );
   };
