@@ -1,0 +1,41 @@
+/* @font-face {
+  font-family: SourceSansPro-BoldItalic;
+  src: url(SourceSansPro-BoldItalic.ttf);
+}
+@font-face {
+  font-family: SourceSansPro-Italic;
+  src: url(SourceSansPro-Italic.ttf);
+}
+@font-face {
+  font-family: SourceSansPro-Regular;
+  src: url(SourceSansPro-Regular.ttf);
+}
+@font-face {
+  font-family: SourceSansPro-SemiBold;
+  src: url(fonts/SourceSansPro-SemiBold.ttf);
+} */
+
+:root {
+  /* font-family: SourceSansPro-BoldItalic; */
+  font-weight: 300;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+a {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+/* thead[class*="ant-table-thead"] th { header do ant table
+  background-color: #1f2937;
+} */

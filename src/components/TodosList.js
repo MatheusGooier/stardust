@@ -1,10 +1,68 @@
 import axios from "axios";
 import React, { useContext } from "react";
 import TodosContext from "./contexts/todoContext";
+import { Table, Tag, Space } from "antd";
+import "antd/dist/antd.css";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(TodosContext);
   // const title = state.todos.length > 0 ? `${state.todos.length} Conta(s) a pagar regitrada(s)` : "Nenhuma conta registrada";
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "BRL",
+  });
+
+  const columns = [
+    {
+      title: "Descrição",
+      dataIndex: "titulo",
+      key: "titulo",
+    },
+    {
+      title: "Tipo da conta",
+      dataIndex: "tipo",
+      key: "tipo",
+    },
+    {
+      title: "Vencimento",
+      dataIndex: "dataVencimento",
+      key: "dataVencimento",
+    },
+    {
+      title: "Valor",
+      dataIndex: "price",
+      className: "column-money",
+      key: "price",
+    },
+
+    {
+      title: "Ações",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle" key={record.id}>
+          <a
+            onClick={() =>
+              dispatch({ type: "SET_CURRENT_TODO", payload: record })
+            }
+          >
+            Editar
+          </a>
+          <a
+            onClick={async () => {
+              await axios.delete(
+                `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`
+              );
+              dispatch({ type: "REMOVE_TODO", payload: record });
+            }}
+          >
+            Remover
+          </a>
+        </Space>
+      ),
+    },
+  ];
+
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1;
   var day = dateObj.getUTCDate();
@@ -28,75 +86,44 @@ export default function TodoList() {
     return sum;
   }, 0);
 
-  const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "BRL",
-  });
+  // const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
 
   return (
-    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded">
-      {/* <h1 className="font-bold">{title}</h1> */}
-      <ul className="list-reset text-white p-2">
-        <li className="text-black flex">
-          <span className="flex-1">Descrição</span>
-          <span className="flex-1">Tipo da conta</span>
-          <span className="flex-1">Vencimento</span>
-          <span className="flex-1">Valor</span>
-          <span>Ações</span>
-        </li>
-        {state.todos.map((todo) => (
-          <li
-            key={todo.id}
-            className={`rounded cursor-pointer flex items-center bg-yellow-600 border-grey border-dotted border-2 my-1 py-4            
-            ${todo.complete && "bg-yellow-900"}
-            ${todo.tipo === "Receber" && "bg-blue-600"}
-            ${todo.tipo === "Receber" && todo.complete && "bg-blue-900"}
-            `}
-            onDoubleClick={async () => {
-              const response = await axios.patch(
-                `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${todo.id}`,
-                { complete: !todo.complete }
-              );
-              dispatch({ type: "TOGGLE_TODO", payload: response.data });
-            }}
-          >
-            <span className="flex-1">{todo.text}</span>
-            <span className="flex-1">{todo.tipo}</span>
-            <span
-              className={`flex-1 ${
-                Date.parse(today) > Date.parse(todo.dataVencimento) &&
-                "text-red-500 font-bold"
-              }`}
-            >
-              {todo.dataVencimento}
-            </span>
-            <span className="flex-1">{formatter.format(todo.price)}</span>
-            <button
-              className="mr-2"
-              onClick={() =>
-                dispatch({ type: "SET_CURRENT_TODO", payload: todo })
-              }
-            >
-              <i className="fa fa-edit"></i>
-            </button>
-            <button
-              className="mr-2"
-              onClick={async () => {
-                await axios.delete(
-                  `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${todo.id}`
-                );
-                dispatch({ type: "REMOVE_TODO", payload: todo });
-              }}
-            >
-              <i className="fa fa-remove"></i>
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded p-2 ">
+      <Table
+        columns={columns}
+        dataSource={state.todos}
+        rowKey={(record) => record.id}
+        expandable={{
+          expandedRowRender: (record) => (
+            <div className="flex justify-between">
+              <p className="flex-1">{record.text}</p>
+              <a
+                onClick={async () => {
+                  const response = await axios.patch(
+                    `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`,
+                    { complete: !record.complete }
+                  );
+                  dispatch({ type: "TOGGLE_TODO", payload: response.data });
+                }}
+              >
+                {record.complete ? "Cancelar pagamento" : "Concluír pagamento"}
+              </a>
+            </div>
+          ),
+          rowExpandable: (record) => record.text !== "",
+        }}
+        rowClassName={(record, index) =>
+          record.tipo === "Pagar"
+            ? record.complete
+              ? "bg-yellow-100"
+              : "bg-yellow-200"
+            : record.complete
+            ? "bg-green-100"
+            : "bg-green-200"
+        }
+      />
       <div className="font-bold">Saldo atual: {formatter.format(saldo)}</div>{" "}
-      <div>{footerText}</div>
     </div>
   );
 }

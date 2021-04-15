@@ -1,47 +1,57 @@
 import axios from "axios";
 import React, { useContext } from "react";
 import CentroCustoContext from "./contexts/centroCustoContext";
+import { Table, Space } from "antd";
 
-export default function TodoList() {
+export default function CcList() {
   const { state, dispatch } = useContext(CentroCustoContext);
+
+  const columns = [
+    {
+      title: "Descrição",
+      dataIndex: "titulo",
+      key: "titulo",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Tipo",
+      dataIndex: "tipo",
+      key: "tipo",
+    },
+    {
+      title: "Ações",
+      key: "id",
+      render: (text, record) => (
+        <Space size="middle" key={record.id}>
+          <a
+            onClick={() =>
+              dispatch({ type: "SET_CURRENT_CC", payload: record })
+            }
+          >
+            Editar {record.name}
+          </a>
+          <a
+            onClick={async () => {
+              await axios.delete(
+                `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${record.id}`
+              );
+              dispatch({ type: "REMOVE_CC", payload: record });
+            }}
+          >
+            Remover
+          </a>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded">
-      {/* <h1 className="font-bold">{title}</h1> */}
-      <ul className="list-reset text-white p-2">
-        <li className="text-black flex">
-          <span className="flex-1">Descrição</span>
-          <span className="flex-1">Setor financeiro</span>
-          <span className="flex-1">Ações</span>
-        </li>
-        {state.centroCustos.map((cc) => (
-          <li className="text-black flex" key={cc.id}>
-            <span className="flex-1">{cc.titulo}</span>
-            <span className="flex-1">{cc.tipo}</span>
-            <span className="flex-1">
-              <button
-                className="mr-2"
-                onClick={() =>
-                  dispatch({ type: "SET_CURRENT_CC", payload: cc })
-                }
-              >
-                <i className="fa fa-edit"></i>
-              </button>
-              <button
-                className="mr-2"
-                onClick={async () => {
-                  await axios.delete(
-                    `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCusto/${cc.id}`
-                  );
-                  dispatch({ type: "REMOVE_CC", payload: cc });
-                }}
-              >
-                <i className="fa fa-remove"></i>
-              </button>
-            </span>
-          </li>
-        ))}
-      </ul>
+      <Table
+        columns={columns}
+        dataSource={state.centroCustos}
+        rowKey={(record) => record.id}
+      />
     </div>
   );
 }

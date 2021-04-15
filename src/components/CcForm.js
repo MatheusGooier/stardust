@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import axios from "axios";
+import { Button } from "antd";
 
 export default function CcForm() {
   //Criação do centroCusto
@@ -88,24 +89,26 @@ export default function CcForm() {
         />
         Receber
       </p>
-      <button
-        type="submit"
+      <Button
+        type="primary"
         form="formCentroCusto"
         value="Submit"
-        className="text-white rounded cursor-pointer items-center bg-green-700 border-2 my-4 py-1 px-6"
+        className="text-white rounded cursor-pointer items-center bg-green-300 border-2 my-4 py-1 px-6"
+        onClick={handleSubmit}
       >
         Salvar
-      </button>
-      <button
+      </Button>
+      <Button
+        danger
         onClick={(e) => {
           setCentroCusto("");
         }}
         type="button"
         form="formCentroCusto"
-        className="text-white rounded cursor-pointer items-center bg-yellow-800 border-2 my-4 py-1 px-6"
+        className="text-white rounded cursor-pointer items-center bg-yellow-200 border-2 my-4 py-1 px-6 ml-4"
       >
         Limpar
-      </button>
+      </Button>
     </form>
   );
 }

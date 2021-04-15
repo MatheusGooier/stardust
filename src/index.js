@@ -5,6 +5,7 @@ import CcPage from "./components/CcPage";
 import Menu from "./components/Menu";
 // import { BrowserRouter, Switch, Route } from "react-router-dom"; usar o switch para single page app
 import { BrowserRouter, Route } from "react-router-dom";
+import "./default.css";
 
 // const routes = [
 //   {
@@ -20,7 +21,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <BrowserRouter className="bg-gray-600">
+    <BrowserRouter>
       <Menu />
       <Route path="/" exact={true} component={TodoPage} />
       <Route path="/cc" component={CcPage} />

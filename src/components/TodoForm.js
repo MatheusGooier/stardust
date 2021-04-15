@@ -3,6 +3,7 @@ import { uuid } from "uuidv4";
 import React from "react";
 import TodosContext from "./contexts/todoContext";
 import axios from "axios";
+import { Button } from "antd";
 
 export default function TodoForm() {
   //Busca o centro de custo
@@ -208,22 +209,24 @@ export default function TodoForm() {
         ))}
       </ul>
 
-      <button
-        type="submit"
+      <Button
+        type="primary"
         form="formTodo"
         value="Submit"
-        className="text-white rounded cursor-pointer items-center bg-green-700 border-2 my-4 py-1 px-6"
+        className="text-white rounded cursor-pointer items-center bg-green-300 my-4 py-1 px-6 "
+        onClick={handleSubmit}
       >
         Salvar
-      </button>
-      <button
+      </Button>
+      <Button
+        danger
         onClick={HandleClear}
         type="button"
         form="formTodo"
-        className="text-white rounded cursor-pointer items-center bg-yellow-800 border-2 my-4 py-1 px-6"
+        className="text-white rounded cursor-pointer items-center bg-yellow-200 my-4 py-1 px-6 ml-4"
       >
         Limpar
-      </button>
+      </Button>
     </form>
   );
 }
