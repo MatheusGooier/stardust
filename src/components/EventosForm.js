@@ -4,18 +4,19 @@ import axios from "axios";
 import { Form, Input, Button, DatePicker, Divider, InputNumber } from "antd";
 import moment from "moment";
 import EventosContext from "./contexts/eventoContext";
+import currencyList from "./globals/currency";
+import returnStrDrateFromObj from "./globals/returnStrDateFromObj";
+import locale from "./globals/locale";
 // import eventosReducer from "./reducers/eventoReducer";
 
 export default function EventosForm() {
   const formRef = React.createRef();
 
   //Busca o dia de hoje e formata
-  const dateObj = new Date();
-  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, "0");
-  const day = dateObj.getUTCDate().toString().padStart(2, "0");
-  const year = dateObj.getUTCFullYear();
-  const today = day + "/" + month + "/" + year;
+  const today = returnStrDrateFromObj();
   const dateFormat = "DD/MM/YYYY";
+
+  //Form usado nos componentes antd
   const [form] = Form.useForm();
 
   //Criação do Evento
@@ -31,12 +32,12 @@ export default function EventosForm() {
       currentEvento.constructor !== Object
     ) {
       setEvento(currentEvento);
-
-      var momentDataEvento = moment(currentEvento.dataEvento).format(
-        dateFormat
-      );
+      console.log("currentEvento", currentEvento);
+      var momentDataEvento = moment(currentEvento.dataEvento, dateFormat);
       // var dateMonthAsWord = moment("2014-02-27T10:00:00").format('DD-MMM-YYYY');
 
+      console.log("moment(momentDataEvento)", moment(momentDataEvento));
+      console.log("momentDataEvento", momentDataEvento);
       form.setFieldsValue({
         titulo: currentEvento.titulo,
         text: currentEvento.text,
@@ -77,6 +78,8 @@ export default function EventosForm() {
         dataEvento: values["dataEvento"].format(dateFormat),
       };
 
+      console.log(evento.titulo);
+
       if (evento.titulo) {
         const reponse = await axios.patch(
           `https://hooks-api-matheusalex-hotmailcom.vercel.app/eventos/${currentEvento.id}`,
@@ -100,6 +103,50 @@ export default function EventosForm() {
           }
         );
         dispatch({ type: "ADD_EVENTO", payload: response.data });
+      }
+    };
+
+    const currencyFormatter = (selectedCurrOpt) => (value) => {
+      return new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: selectedCurrOpt.split("::")[1],
+      }).format(value);
+    };
+
+    const currencyParser = (val) => {
+      try {
+        // for when the input gets clears
+        if (typeof val === "string" && !val.length) {
+          val = "0.0";
+        }
+
+        // detecting and parsing between comma and dot
+        var group = new Intl.NumberFormat(locale)
+          .format(1111)
+          .replace(/1/g, "");
+        var decimal = new Intl.NumberFormat(locale)
+          .format(1.1)
+          .replace(/1/g, "");
+        var reversedVal = val.replace(new RegExp("\\" + group, "g"), "");
+        reversedVal = reversedVal.replace(new RegExp("\\" + decimal, "g"), ".");
+        //  => 1232.21 €
+
+        // removing everything except the digits and dot
+        reversedVal = reversedVal.replace(/[^0-9.]/g, "");
+        //  => 1232.21
+
+        // appending digits properly
+        const digitsAfterDecimalCount = (reversedVal.split(".")[1] || [])
+          .length;
+        const needsDigitsAppended = digitsAfterDecimalCount > 2;
+
+        if (needsDigitsAppended) {
+          reversedVal = reversedVal * Math.pow(10, digitsAfterDecimalCount - 2);
+        }
+
+        return Number.isNaN(reversedVal) ? 0 : reversedVal;
+      } catch (error) {
+        console.error(error);
       }
     };
 
@@ -144,10 +191,11 @@ export default function EventosForm() {
             // defaultValue={0}
             style={{ width: 200 }}
             placeholder="R$ 0.00"
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            prefix="R$ "
+            formatter={currencyFormatter(
+              `${currencyList.CtryNm}::${currencyList.Ccy}`
+            )}
+            parser={currencyParser}
           />
         </Form.Item>
         <Form.Item

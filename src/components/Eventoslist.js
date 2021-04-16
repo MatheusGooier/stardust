@@ -1,11 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from "react";
 import { List, Divider, Button } from "antd";
 import EventosContext from "./contexts/eventoContext";
 import axios from "axios";
+import returnStrDateFromObj from "./globals/returnStrDateFromObj";
+
 export default function EventosList() {
   const { state, dispatch } = useContext(EventosContext);
 
   const eventosByDate = state.eventos.filter(function (evento) {
+    if (state.calendarDay === "") {
+      dispatch({ type: "SET_CALENDARDAY", payload: returnStrDateFromObj() });
+    }
     return evento.dataEvento === state.calendarDay;
   });
 
