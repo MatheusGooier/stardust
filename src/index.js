@@ -8,18 +8,6 @@ import Menu from "./components/Menu";
 import { BrowserRouter, Route } from "react-router-dom";
 import "./default.css";
 
-// const routes = [
-//   {
-//     path: "/",
-//     exact: true,
-//     componentName: TodoPage,
-//   },
-//   {
-//     path: "/cc",
-//     componentName: CcPage,
-//   },
-// ];
-
 const App = () => {
   return (
     <BrowserRouter>

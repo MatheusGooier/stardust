@@ -39,11 +39,14 @@ export default function EventosPage() {
 
     return (
       <EventosContext.Provider value={{ state, dispatch }}>
-        <div className="flex">
-          <EventosCalendario />
+        <div className="flex ">
+          <div className="flex-1">
+            <EventosCalendario />
+            <EventosList />
+          </div>
+
           <div className="flex-1">
             <EventosForm />
-            <EventosList />
           </div>
         </div>
       </EventosContext.Provider>

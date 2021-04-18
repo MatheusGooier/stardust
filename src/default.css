@@ -50,8 +50,9 @@ a {
 }
 
 .ant-alert {
-  padding: 1px 10px;
+  padding: 1px 2px;
   margin-bottom: 1px;
+  line-height: 1.2;
 }
 
 .ant-list-items {
@@ -60,4 +61,17 @@ a {
 
 .ant-list-lg .ant-list-item {
   margin-top: 4px;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-content {
+  height: 60px;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-value {
+  line-height: 14px;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date {
+  margin: 0 1px;
+  border-color: #d1d5db;
 }

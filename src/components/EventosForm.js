@@ -13,12 +13,14 @@ import {
   Col,
   Row,
   TimePicker,
+  Typography,
 } from "antd";
 import moment from "moment";
 import EventosContext from "./contexts/eventoContext";
 import currencyList from "./globals/currency";
 import locale from "./globals/locale";
 import EventosParcelas from "./EventosParcelas";
+const { Title } = Typography;
 
 export default function EventosForm() {
   const formRef = React.createRef();
@@ -242,6 +244,7 @@ export default function EventosForm() {
             </Button>
           </Form.Item>
         </Form>
+        <Title level={5}>Contas a receber </Title>
         <EventosParcelas />
       </Col>
     );

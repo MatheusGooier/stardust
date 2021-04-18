@@ -52,6 +52,12 @@ export default function reducer(state, action) {
         ...state,
         eventoTodos: action.payload,
       };
+    case "ADD_EVENTO_TODOS":
+      const addedTodo = [...state.eventoTodos, action.payload];
+      return {
+        ...state,
+        eventoTodos: addedTodo,
+      };
     default:
       return state;
   }
