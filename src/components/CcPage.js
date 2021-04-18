@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import centroCustoReducer from "./reducers/centroCustoReducer";

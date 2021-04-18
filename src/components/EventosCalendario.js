@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
-import { Calendar, Alert, Divider } from "antd";
+import { Calendar, Alert, Divider, Col } from "antd";
 import EventosContext from "./contexts/eventoContext";
-import returnStrDateFromObj from "./globals/returnStrDateFromObj";
 // import eventosReducer from "./reducers/eventoReducer";
 
 export default function EventosCalendario() {
   const { state, dispatch } = useContext(EventosContext);
   const dateFormat = "DD/MM/YYYY";
-
-  const today = returnStrDateFromObj();
 
   function dateCellRender(value) {
     const listData = getListData(value);
@@ -51,9 +48,15 @@ export default function EventosCalendario() {
   }
 
   return (
-    <div className="flex-1 ">
-      <Divider orientation="left">Agenda de eventos</Divider>
-      <Calendar onSelect={onSelect} dateCellRender={dateCellRender} />
+    <div className="flex-1">
+      <Col span={22} offset={1}>
+        <Divider orientation="left">Agenda de eventos</Divider>
+        <Calendar
+          onSelect={onSelect}
+          dateCellRender={dateCellRender}
+          locale="pt_BR"
+        />
+      </Col>
     </div>
   );
 }

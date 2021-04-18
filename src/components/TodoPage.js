@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import TodosContext from "./contexts/todoContext";

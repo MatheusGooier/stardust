@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import EventosCalendario from "./EventosCalendario";
 import EventosForm from "./EventosForm";
-import EventosContext from "./contexts/eventoContext";
 import eventosReducer from "./reducers/eventoReducer";
 import EventosList from "./Eventoslist";
 import axios from "axios";
+import EventosContext from "./contexts/eventoContext";
 
 export default function EventosPage() {
   const useAPI = (endpoint) => {

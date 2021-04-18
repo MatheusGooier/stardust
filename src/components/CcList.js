@@ -43,7 +43,6 @@ export default function CcList() {
       ),
     },
   ];
-
   return (
     <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded mt-2">
       <Table

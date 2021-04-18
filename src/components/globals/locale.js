@@ -1,1 +1,3 @@
-export default "PT-br";
+const locale = "PT-br";
+
+export default locale;

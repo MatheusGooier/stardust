@@ -49,32 +49,6 @@ a {
   padding: 8px 8px;
 }
 
-.ant-picker-calendar {
-  padding-left: 2px;
-  padding-right: 2px;
-  margin: 8px;
-}
-
-.events {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.events .ant-badge-status {
-  width: 100%;
-  overflow: hidden;
-  font-size: 12px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.notes-month {
-  font-size: 28px;
-  text-align: center;
-}
-.notes-month section {
-  font-size: 28px;
-}
-
 .ant-alert {
   padding: 1px 10px;
   margin-bottom: 1px;

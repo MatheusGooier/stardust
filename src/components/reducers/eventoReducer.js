@@ -47,6 +47,11 @@ export default function reducer(state, action) {
         ...state,
         calendarDay: action.payload,
       };
+    case "SET_EVENTO_TODOS":
+      return {
+        ...state,
+        eventoTodos: action.payload,
+      };
     default:
       return state;
   }
