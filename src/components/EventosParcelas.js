@@ -20,9 +20,6 @@ export default function EventoParcelas() {
 
   const { state, dispatch } = useContext(EventosContext);
 
-  console.log("state", state);
-  // const { state, dispatch } = useContext(EventosContext);
-
   const currencyParser = (val) => {
     try {
       // for when the input gets clears

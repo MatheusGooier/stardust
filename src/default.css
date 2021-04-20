@@ -1,22 +1,4 @@
-/* @font-face {
-  font-family: SourceSansPro-BoldItalic;
-  src: url(SourceSansPro-BoldItalic.ttf);
-}
-@font-face {
-  font-family: SourceSansPro-Italic;
-  src: url(SourceSansPro-Italic.ttf);
-}
-@font-face {
-  font-family: SourceSansPro-Regular;
-  src: url(SourceSansPro-Regular.ttf);
-}
-@font-face {
-  font-family: SourceSansPro-SemiBold;
-  src: url(fonts/SourceSansPro-SemiBold.ttf);
-} */
-
 :root {
-  /* font-family: SourceSansPro-BoldItalic; */
   font-weight: 300;
 }
 
@@ -35,10 +17,6 @@ a {
   color: #1890ff;
   font-weight: 500;
 }
-
-/* thead[class*="ant-table-thead"] th { header do ant table
-  background-color: #1f2937;
-} */
 
 /* esconde a opcao de ver o calendario por ano */
 .ant-picker-calendar-header .ant-picker-calendar-mode-switch {

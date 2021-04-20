@@ -1,20 +1,46 @@
-import React from "react";
+import React, { useContext, useReducer, useEffect } from "react";
 import ReactDOM from "react-dom";
 import TodoPage from "./components/TodoPage";
 import CcPage from "./components/CcPage";
 import EventosPage from "./components/EventosPage";
-import Menu from "./components/Menu";
-// import { BrowserRouter, Switch, Route } from "react-router-dom"; usar o switch para single page app
+import HeaderMenu from "./components/HeaderMenu";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./theme";
+import { GlobalStyles } from "./global";
 import { BrowserRouter, Route } from "react-router-dom";
+import ThemeContext from "./components/contexts/themeContext";
+import themeReducer from "./components/reducers/themeReducer";
 import "./default.css";
 
 const App = () => {
+  // const themeInitialState = useContext(ThemeContext);
+  // const theme = useReducer(themeReducer, themeInitialState);
+
+  const themeInitialState = useContext(ThemeContext);
+  const [theme, dispatch] = useReducer(themeReducer, themeInitialState);
+
+  const handleThemeChange = (checked) => {
+    dispatch({ type: "TOGGLE_THEME", payload: checked });
+  };
+
   return (
     <BrowserRouter>
-      <Menu />
-      <Route path="/" exact={true} component={TodoPage} />
-      <Route path="/cc" component={CcPage} />
-      <Route path="/eventos" component={EventosPage} />
+      <ThemeContext.Provider value={{ theme }}>
+        <ThemeProvider theme={theme.value === "light" ? lightTheme : darkTheme}>
+          <>
+            <GlobalStyles />
+
+            <HeaderMenu
+              handleThemeChange={handleThemeChange}
+              themeChecked={theme.currentChecked}
+            />
+
+            <Route path="/" exact={true} component={TodoPage} />
+            <Route path="/cc" component={CcPage} />
+            <Route path="/eventos" component={EventosPage} />
+          </>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     </BrowserRouter>
   );
 };

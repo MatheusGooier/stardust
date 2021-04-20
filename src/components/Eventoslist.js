@@ -74,7 +74,6 @@ export default function EventosList() {
               title={
                 <div>
                   <span>{evento.titulo}</span>
-                  {evento.horarioEvento}
                 </div>
               }
               description={evento.text}
