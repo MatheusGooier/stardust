@@ -98,11 +98,49 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .ant-list-lg .ant-list-item {
-    background-color:  ${({ theme }) => theme.calendarCellSelectedBGColor};
+    background-color:  ${({ theme }) => theme.listLine};
   }
 
   .ant-table table {
-    background-color:  ${({ theme }) => theme.calendarCellSelectedBGColor};
+    background-color:  ${({ theme }) => theme.listLine};
+    color: ${({ theme }) => theme.text};
   }
 
+  .ant-alert-success {
+    border: 1px solid ${({ theme }) => theme.alertBorder};
+    background-color: ${({ theme }) => theme.alertBG};
+  }
+
+  .ant-alert-message {
+    color: ${({ theme }) => theme.alertText};
+  }
+
+  // .ant-picker-cell {
+  //   color: ${({ theme }) => theme.daysInactiveColor};
+  // }
+
+  .ant-btn-dangerous {
+    background: ${({ theme }) => theme.dangerousButton};
+  }
+
+  .ant-btn-primary {
+    color: ${({ theme }) => theme.primaryButton}
+  }
+
+  .ant-table-thead > tr > th {
+    background-color:  ${({ theme }) => theme.inputBackgroundColor};
+    color: ${({ theme }) => theme.text};
+  }
+
+  .ant-list-item-meta-title {
+    color: ${({ theme }) => theme.text};
+  }
+
+  .ant-list-item-meta-description {
+    color: ${({ theme }) => theme.text};
+  }
+
+  .ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
+    background-color: ${({ theme }) => theme.inputBackgroundColor}
+  }
   `;

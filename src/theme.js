@@ -7,6 +7,13 @@ export const lightTheme = {
   inputBackgroundColor: "#fff",
   calendarCellSelectedBGColor: "#E5E7EB",
   calendarCellHoverBGColor: "#E2E2E2",
+  alertBorder: "#b7eb8f",
+  alertBG: "#f6ffed",
+  // daysInactiveColor: "rgba(0, 0, 0, 0.25)",
+  dangerousButton: "#fff",
+  primaryButton: "#fff",
+  listLine: "#FAFAFA",
+  alertText: "#363537",
 };
 
 export const darkTheme = {
@@ -18,4 +25,11 @@ export const darkTheme = {
   inputBackgroundColor: "#1F2937",
   calendarCellSelectedBGColor: "#9CA3AF",
   calendarCellHoverBGColor: "#374151",
+  alertBorder: "#D6D3D1",
+  alertBG: "#292524",
+  // daysInactiveColor: "rgba(255, 255, 255, 0.35)",
+  dangerousButton: "#111827",
+  primaryButton: "#111827",
+  listLine: "#292524",
+  alertText: "rgba(255, 255, 255, 0.65)",
 };

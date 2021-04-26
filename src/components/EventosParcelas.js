@@ -65,8 +65,8 @@ export default function EventoParcelas() {
     },
     {
       title: "Valor",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "fPrice",
+      key: "fPrice",
     },
     {
       title: "Vencimento",

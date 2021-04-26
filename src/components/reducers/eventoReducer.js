@@ -48,6 +48,14 @@ export default function reducer(state, action) {
         calendarDay: action.payload,
       };
     case "SET_EVENTO_TODOS":
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "BRL",
+      });
+      action.payload.forEach((element) => {
+        console.log("element", element);
+        element.fPrice = formatter.format(element.price);
+      });
       return {
         ...state,
         eventoTodos: action.payload,

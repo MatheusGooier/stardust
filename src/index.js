@@ -13,9 +13,6 @@ import themeReducer from "./components/reducers/themeReducer";
 import "./default.css";
 
 const App = () => {
-  // const themeInitialState = useContext(ThemeContext);
-  // const theme = useReducer(themeReducer, themeInitialState);
-
   const themeInitialState = useContext(ThemeContext);
   const [theme, dispatch] = useReducer(themeReducer, themeInitialState);
 
