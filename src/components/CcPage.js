@@ -40,7 +40,10 @@ export default function ccPage() {
     }, [savedCc]);
 
     return (
-      <CentroCustoContext.Provider value={{ state, dispatch }}>
+      <CentroCustoContext.Provider
+        value={{ state, dispatch }}
+        className="flex justify-center"
+      >
         <CcList />
         <CcForm />
       </CentroCustoContext.Provider>

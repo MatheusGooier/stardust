@@ -143,4 +143,70 @@ export const GlobalStyles = createGlobalStyle`
   .ant-pagination-prev .ant-pagination-item-link, .ant-pagination-next .ant-pagination-item-link {
     background-color: ${({ theme }) => theme.inputBackgroundColor}
   }
+
+  .ant-list-empty-text {
+    background-color: ${({ theme }) => theme.listLine}
+  }
+
+  .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: ${({ theme }) => theme.listLineHover}
+  }
+
+  .ant-divider-horizontal.ant-divider-with-text::before, .ant-divider-horizontal.ant-divider-with-text {
+    border-color: ${({ theme }) => theme.text};
+  }
+
+  .ant-table-row-expand-icon {
+    background: inherit
+  }
+
+  tr.ant-table-expanded-row > td, tr.ant-table-expanded-row:hover > td {
+    background-color: rgba(150, 150, 150, 0.2)
+  }
+
+  .ant-checkbox + span{
+    color: ${({ theme }) => theme.text};
+  }
+
+  .ant-radio-button-wrapper > .ant-radio-button {
+    background-color:  ${({ theme }) => theme.listLine};
+    color: ${({ theme }) => theme.text};
+  }
+
+  .ant-radio-button-wrapper  {
+    background-color:  ${({ theme }) => theme.listLine};
+    color: ${({ theme }) => theme.text};
+    transition: none;
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: ${({ theme }) => theme.buttonBorder};
+    border-color: ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    color: ${({ theme }) => theme.buttonBorder};
+    border-color: ${({ theme }) => theme.buttonBorder};
+    background-color: ${({ theme }) => theme.buttonBorder};    
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+    border-color: ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+    border-right-color: ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper:hover {
+    color: ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
+    background-color: ${({ theme }) => theme.buttonBorder};
+  }
   `;

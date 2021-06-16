@@ -4,9 +4,87 @@ import { uuid } from "uuidv4";
 import React from "react";
 import TodosContext from "./contexts/todoContext";
 import axios from "axios";
-import { Button, Form, Input } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Col,
+  Row,
+  Divider,
+  InputNumber,
+  DatePicker,
+  Checkbox,
+  Radio,
+} from "antd";
+import locale from "./globals/locale";
+import moment from "moment";
+import currencyList from "./globals/currency";
+
+let selectedTipo = "Pagar";
+const dateFormat = "DD/MM/YYYY";
+
+const currencyParser = (val) => {
+  try {
+    // for when the input gets clears
+    if (typeof val === "string" && !val.length) {
+      val = "0.0";
+    }
+
+    // detecting and parsing between comma and dot
+    var group = new Intl.NumberFormat(locale).format(1111).replace(/1/g, "");
+    var decimal = new Intl.NumberFormat(locale).format(1.1).replace(/1/g, "");
+    var reversedVal = val.replace(new RegExp("\\" + group, "g"), "");
+    reversedVal = reversedVal.replace(new RegExp("\\" + decimal, "g"), ".");
+    reversedVal = reversedVal.replace(/[^0-9.]/g, "");
+    const digitsAfterDecimalCount = (reversedVal.split(".")[1] || []).length;
+    const needsDigitsAppended = digitsAfterDecimalCount > 2;
+
+    if (needsDigitsAppended) {
+      reversedVal = reversedVal * Math.pow(10, digitsAfterDecimalCount - 2);
+    }
+
+    return Number.isNaN(reversedVal) ? 0 : reversedVal;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export default function TodoForm() {
+  const formRef = React.createRef();
+  const [form] = Form.useForm();
+
+  const currencyFormatter = (selectedCurrOpt) => (value) => {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: selectedCurrOpt.split("::")[1],
+    }).format(value);
+  };
+
+  //Criação do currentTodo
+  const [todo, setTodo] = useState("");
+  const {
+    state: { currentTodo = {} },
+    dispatch,
+  } = useContext(TodosContext);
+
+  useEffect(() => {
+    if (currentTodo) {
+      setTodo(currentTodo);
+      var momentDataVencimento = moment(currentTodo.dataVencimento, dateFormat);
+      form.setFieldsValue({
+        titulo: currentTodo.titulo,
+        text: currentTodo.text,
+        price: currentTodo.price,
+        complete: currentTodo.complete,
+        tipo: currentTodo.tipo,
+        dataVencimento: moment(momentDataVencimento),
+        centroCusto: currentTodo.centroCusto,
+      });
+    } else {
+      onReset();
+    }
+  }, [currentTodo.id, currentTodo]);
+
   //Busca o centro de custo
   const useAPI = (endpoint) => {
     const [data, setData] = useState([]);
@@ -22,55 +100,45 @@ export default function TodoForm() {
     return data;
   };
 
+  const handleDateChange = (date, dateString) => {
+    if (!!date) {
+      setTodo({ dataVencimento: dateString });
+    }
+  };
+
+  const validateMessages = {
+    required: "${label} é obrigatório",
+    types: {
+      email: "${label} is not a valid email!",
+      number: "${label} is not a valid number!",
+    },
+    number: {
+      range: "${label} must be between ${min} and ${max}",
+    },
+  };
+
   const savedCentroCustos = useAPI(
     "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos"
   );
 
-  //Criação do currentTodo
-  const [todo, setTodo] = useState("");
-  const {
-    state: { currentTodo = {} },
-    dispatch,
-  } = useContext(TodosContext);
-
-  useEffect(() => {
-    if (currentTodo) {
-      setTodo(currentTodo);
-    } else {
-      setTodo("");
+  const filteredCc = savedCentroCustos.reduce(function (addCC, cc) {
+    if (cc.tipo === selectedTipo) {
+      addCC.push(cc.titulo);
     }
-    updCCcheckbox(currentTodo.centroCusto);
-  }, [currentTodo.id, currentTodo]);
+    return addCC;
+  }, []);
 
-  function updCCcheckbox(value) {
-    for (let key in savedCentroCustos) {
-      if (document.getElementById(`ccId${savedCentroCustos[key].titulo}`)) {
-        document.getElementById(
-          `ccId${savedCentroCustos[key].titulo}`
-        ).checked = false;
-      }
-    }
-
-    for (let key in value) {
-      document.getElementById(`ccId${value[key]}`).checked = true;
-      let temp = CentroCustoMarcados;
-      temp.set(value[key], !CentroCustoMarcados.get(value[key]));
-      setCentroCustoMarcados(temp);
-    }
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (values) => {
     if (currentTodo.titulo) {
       const reponse = await axios.patch(
         `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${currentTodo.id}`,
         {
-          titulo: todo.titulo || "Sem título",
-          text: todo.text || "Sem descrição",
-          price: todo.price || 0,
-          tipo: todo.tipo,
-          dataVencimento: todo.dataVencimento,
-          centroCusto: [...CentroCustoMarcados.keys()],
+          titulo: values.titulo || "Sem título",
+          text: values.text || "Sem descrição",
+          price: values.price || 0,
+          tipo: values.tipo,
+          dataVencimento: values.dataVencimento,
+          centroCusto: values.centroCusto,
         }
       );
       dispatch({ type: "UPDATE_TODO", payload: reponse.data });
@@ -79,155 +147,127 @@ export default function TodoForm() {
         `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/`,
         {
           id: uuid(),
-          titulo: todo.titulo || "Sem título",
-          text: todo.text || "Sem descrição",
-          price: todo.price || 0,
+          titulo: values.titulo || "Sem título",
+          text: values.text || "Sem descrição",
+          price: values.price || 0,
           complete: false,
-          tipo: todo.tipo,
-          dataVencimento: todo.dataVencimento,
-          centroCusto: [...CentroCustoMarcados.keys()],
+          tipo: values.tipo,
+          dataVencimento: values.dataVencimento,
+          centroCusto: values.centroCusto,
         }
       );
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
     setTodo("");
-    updCCcheckbox("");
-    setCentroCustoMarcados(new Map());
   };
 
-  const HandleClear = (e) => {
+  const onchangeTipo = (value) => {
+    selectedTipo = value.target.value;
+  };
+
+  const onReset = (e) => {
     setTodo("");
-    updCCcheckbox("");
-    setCentroCustoMarcados(new Map());
-  };
-
-  //Lista de centro de custos selecionados
-  const [CentroCustoMarcados, setCentroCustoMarcados] = useState(new Map());
-
-  const updateCentroCusto = (event) => {
-    let temp = CentroCustoMarcados;
-
-    if (event.target.checked) {
-      temp.set(
-        event.target.value,
-        !CentroCustoMarcados.get(event.target.value)
-      );
-    } else {
-      temp.delete(event.target.value);
-    }
-    setCentroCustoMarcados(temp);
-  };
-
-  const isCentroCustoChecked = (event) => {
-    if ([todo.centroCusto].includes(event.target.value)) {
-    }
+    dispatch({ type: "SET_CURRENT_TODO", payload: {} });
+    form.setFieldsValue({ tipo: selectedTipo });
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      className="justify-center px-4 mx-auto max-w-md font-mono border-grey border-2 m-2"
-      id="formTodo"
-    >
-      <p className="mt-2 ">Título</p>
-      <Input
-        type="text"
-        placeholder=""
-        className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
-        onChange={(event) => setTodo({ ...todo, titulo: event.target.value })}
-        value={todo.titulo || ""}
-      ></Input>
-      <p className="mt-2">Descrição</p>
-      <textarea
-        rows="2"
-        className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
-        onChange={(event) => setTodo({ ...todo, text: event.target.value })}
-        value={todo.text || ""}
-      ></textarea>
-      <div className="flex">
-        <p className="flex-1 ">
-          Valor
-          <Input
-            id="valor"
-            placeholder=" R$ 0,00"
-            type="number"
-            className="border-grey border-solid border-2 p-1 w-5/6"
-            onChange={(event) =>
-              setTodo({ ...todo, price: event.target.value })
-            }
-            value={todo.price || ""}
-          ></Input>
-        </p>
-        <p className="flex-1 mt-1">
-          Tipo da conta:<br></br>
-          <Input
-            type="radio"
-            id="pagar"
-            checked={todo.tipo === "Pagar"}
-            name="tipodaconta"
-            value="Pagar"
-            className="mr-2"
-            onChange={(event) => setTodo({ ...todo, tipo: event.target.value })}
-          />
-          Pagar
-          <Input
-            type="radio"
-            id="receber"
-            checked={todo.tipo === "Receber"}
-            name="tipodaconta"
-            value="Receber"
-            className="mx-2"
-            onChange={(event) => setTodo({ ...todo, tipo: event.target.value })}
-          />
-          Receber
-        </p>
-      </div>
-      <p className="mt-2">Vencimento</p>
-      <Input
-        id="date"
-        type="date"
-        value={todo.dataVencimento || ""}
-        className={`border-grey border-solid border-2 p-1 w-3/6`}
-        onChange={(event) =>
-          setTodo({ ...todo, dataVencimento: event.target.value })
-        }
-      ></Input>
-
-      <p className="mt-2">Centro de custos:</p>
-      <ul>
-        {savedCentroCustos.map((CentroCusto) => (
-          <li key={CentroCusto.id}>
-            <Input
-              type="checkbox"
-              id={`ccId${CentroCusto.titulo}`}
-              className="ml-2 checkbox"
-              value={CentroCusto.titulo}
-              onChange={updateCentroCusto}
-              defaultChecked={isCentroCustoChecked}
-            />
-            <span className="mx-2">{CentroCusto.titulo}</span>
-          </li>
-        ))}
-      </ul>
-
-      <Button
-        type="primary"
-        form="formTodo"
-        value="Submit"
-        className="text-white rounded cursor-pointer items-center bg-green-300 my-4 py-1 px-6 "
-        onClick={handleSubmit}
+    <Col span={12} offset={6}>
+      <Form
+        onFinish={handleSubmit}
+        ref={formRef}
+        layout="vertical"
+        form={form}
+        initialValues="vertical"
+        className="flex-1 m-2 "
+        validateMessages={validateMessages}
       >
-        Salvar
-      </Button>
-      <Button
-        danger
-        onClick={HandleClear}
-        type="button"
-        form="formTodo"
-        className="text-white rounded cursor-pointer items-center bg-yellow-200 my-4 py-1 px-6 ml-4"
-      >
-        Limpar
-      </Button>
-    </Form>
+        <Divider orientation="left">Registro de Título financeiro</Divider>
+        <Row>
+          <Col span={24} offset={0}>
+            <Form.Item
+              label="Título"
+              name="titulo"
+              rules={[{ required: true }]}
+              form={form}
+            >
+              <Input placeholder="Nome do título" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24} offset={0}>
+            <Form.Item label="Descrição" name="text" form={form}>
+              <Input.TextArea
+                rows="2"
+                placeholder="Detalhes sobre o título"
+                className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={4} offset={0}>
+            <Form.Item
+              label="Valor do título"
+              name="price"
+              rules={[{ required: true }]}
+              form={form}
+            >
+              <InputNumber
+                style={{ width: "auto" }}
+                placeholder="R$ 0.00"
+                prefix="R$ "
+                formatter={currencyFormatter(
+                  `${currencyList.CtryNm}::${currencyList.Ccy}`
+                )}
+                parser={currencyParser}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={4} offset={1}>
+            <Form.Item
+              label="Data do evento"
+              name="dataVencimento"
+              rules={[{ required: true }]}
+              form={form}
+            >
+              <DatePicker
+                format={dateFormat}
+                placeholder="01/01/2001"
+                onChange={handleDateChange}
+                allowClear={false}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6} offset={1}>
+            <Form.Item
+              name="tipo"
+              label="Tipo da Conta"
+              id="groupcheckboxTipo"
+              rules={[{ required: true, message: "Please pick an item!" }]}
+            >
+              <Radio.Group onChange={onchangeTipo}>
+                <Radio.Button value="Pagar">Pagar</Radio.Button>
+                <Radio.Button value="Receber">Receber</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Form.Item name="centroCusto" label="Centro de custo">
+          <Checkbox.Group options={filteredCc}></Checkbox.Group>
+        </Form.Item>
+        <Col span={8} offset={0}>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="mr-4">
+              Salvar
+            </Button>
+            <Button danger htmlType="button" onClick={onReset}>
+              Limpar
+            </Button>
+          </Form.Item>
+        </Col>
+      </Form>
+    </Col>
   );
 }

@@ -5,7 +5,7 @@ const { Header, Sider, Footer } = Layout;
 
 // export default function Menu() {
 const HeaderMenu = (props) => {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const handleChange = () => {
     setChecked(!checked);

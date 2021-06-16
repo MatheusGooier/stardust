@@ -1,8 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from "axios";
 import React, { useContext } from "react";
 import TodosContext from "./contexts/todoContext";
-import { Table, Space } from "antd";
-// import { Table, Tag, Space } from "antd";
+import { Table, Space, Divider } from "antd";
 import "antd/dist/antd.css";
 
 export default function TodoList() {
@@ -32,9 +32,9 @@ export default function TodoList() {
     },
     {
       title: "Valor",
-      dataIndex: "price",
+      dataIndex: "fPrice",
       className: "column-money",
-      key: "price",
+      key: "fPrice",
     },
 
     {
@@ -42,14 +42,18 @@ export default function TodoList() {
       key: "action",
       render: (text, record) => (
         <Space size="middle" key={record.id}>
-          <span
+          <a
+            className="cursor-pointer font-medium"
+            key="list-event-edit"
             onClick={() =>
               dispatch({ type: "SET_CURRENT_TODO", payload: record })
             }
           >
             Editar
-          </span>
-          <span
+          </a>
+          <a
+            className="cursor-pointer text-red-500 font-medium"
+            key="list-event-delete"
             onClick={async () => {
               await axios.delete(
                 `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`
@@ -58,7 +62,7 @@ export default function TodoList() {
             }}
           >
             Remover
-          </span>
+          </a>
         </Space>
       ),
     },
@@ -84,7 +88,8 @@ export default function TodoList() {
   // const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
 
   return (
-    <div className="container mx-auto max-w-6xl text-center font-mono border-grey border-2 rounded p-2 mt-2">
+    <div className="container mx-auto max-w-6xl text-center font-mono p-2 mt-2">
+      <Divider orientation="left">Tabela de Centro de Custo</Divider>
       <Table
         columns={columns}
         dataSource={state.todos}
@@ -93,7 +98,8 @@ export default function TodoList() {
           expandedRowRender: (record) => (
             <div className="flex justify-between">
               <p className="flex-1">{record.text}</p>
-              <span
+              <a
+                className={record.complete ? "text-red-500" : ""}
                 onClick={async () => {
                   const response = await axios.patch(
                     `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`,
@@ -103,7 +109,7 @@ export default function TodoList() {
                 }}
               >
                 {record.complete ? "Cancelar pagamento" : "Concluír pagamento"}
-              </span>
+              </a>
             </div>
           ),
           rowExpandable: (record) => record.text !== "",
@@ -111,11 +117,11 @@ export default function TodoList() {
         rowClassName={(record, index) =>
           record.tipo === "Pagar"
             ? record.complete
-              ? "bg-yellow-100"
-              : "bg-yellow-200"
+              ? "bg-Amber-700"
+              : "bg-amber-900"
             : record.complete
-            ? "bg-green-100"
-            : "bg-green-200"
+            ? "bg-lime-700"
+            : "bg-lime-900"
         }
       />
       <div className="font-bold">Saldo atual: {formatter.format(saldo)}</div>{" "}

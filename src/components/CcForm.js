@@ -3,9 +3,12 @@ import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import axios from "axios";
-import { Button } from "antd";
+import { Form, Input, Button, Radio, Divider, Col, Row } from "antd";
 
 export default function CcForm() {
+  const formRef = React.createRef();
+  const [form] = Form.useForm();
+
   //Criação do centroCusto
   const [centroCusto, setCentroCusto] = useState("");
   const {
@@ -13,22 +16,24 @@ export default function CcForm() {
     dispatch,
   } = useContext(CentroCustoContext);
 
-  useEffect(() => {
-    if (currentCentroCusto) {
-      setCentroCusto(currentCentroCusto);
-    } else {
-      setCentroCusto("");
-    }
-  }, [currentCentroCusto.id, currentCentroCusto]);
+  const validateMessages = {
+    required: "${label} é obrigatório",
+    types: {
+      email: "${label} is not a valid email!",
+      number: "${label} is not a valid number!",
+    },
+    number: {
+      range: "${label} must be between ${min} and ${max}",
+    },
+  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const onFinish = async (values) => {
     if (currentCentroCusto.titulo) {
       const reponse = await axios.patch(
         `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/${currentCentroCusto.id}`,
         {
-          titulo: centroCusto.titulo || "Sem título",
-          tipo: centroCusto.tipo,
+          titulo: values.titulo,
+          tipo: values.tipo,
         }
       );
       dispatch({ type: "UPDATE_CC", payload: reponse.data });
@@ -37,8 +42,8 @@ export default function CcForm() {
         `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/`,
         {
           id: uuid(),
-          titulo: centroCusto.titulo || "Sem título",
-          tipo: centroCusto.tipo,
+          titulo: values.titulo,
+          tipo: values.tipo,
         }
       );
       dispatch({ type: "ADD_CC", payload: response.data });
@@ -46,69 +51,80 @@ export default function CcForm() {
     setCentroCusto("");
   };
 
+  useEffect(() => {
+    if (
+      Object.keys(currentCentroCusto).length !== 0 ||
+      currentCentroCusto.constructor !== Object
+    ) {
+      setCentroCusto(currentCentroCusto);
+      form.setFieldsValue({
+        titulo: currentCentroCusto.titulo,
+        tipo: currentCentroCusto.tipo,
+      });
+    } else {
+      onReset();
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCentroCusto.id, currentCentroCusto]);
+
+  const onReset = () => {
+    formRef.current.resetFields();
+    setCentroCusto("");
+  };
+
   return (
-    <form
-      className="justify-center px-4 mx-auto max-w-md font-mono border-grey border-2 m-2"
-      id="formCentroCusto"
-      onSubmit={handleSubmit}
-    >
-      <p className="mt-2 ">Descrição</p>
-      <input
-        type="text"
-        placeholder=""
-        className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
-        onChange={(event) =>
-          setCentroCusto({ ...centroCusto, titulo: event.target.value })
-        }
-        value={centroCusto.titulo || ""}
-      ></input>
-      <p className="mt-2">
-        Tipo da conta:<br></br>
-        <input
-          type="radio"
-          id="pagar"
-          checked={centroCusto.tipo === "Pagar"}
-          name="tipodaconta"
-          value="Pagar"
-          className="mr-2"
-          onChange={(event) =>
-            setCentroCusto({ ...centroCusto, tipo: event.target.value })
-          }
-        />
-        Pagar
-        <input
-          type="radio"
-          id="receber"
-          checked={centroCusto.tipo === "Receber"}
-          name="tipodaconta"
-          value="Receber"
-          className="mx-2"
-          onChange={(event) =>
-            setCentroCusto({ ...centroCusto, tipo: event.target.value })
-          }
-        />
-        Receber
-      </p>
-      <Button
-        type="primary"
-        form="formCentroCusto"
-        value="Submit"
-        className="text-white rounded cursor-pointer items-center bg-green-300 border-2 my-4 py-1 px-6"
-        onClick={handleSubmit}
+    <Col span={12} offset={6}>
+      <Form
+        onFinish={onFinish}
+        ref={formRef}
+        layout="vertical"
+        form={form}
+        initialValues="vertical"
+        className="flex-1 m-2 "
+        validateMessages={validateMessages}
       >
-        Salvar
-      </Button>
-      <Button
-        danger
-        onClick={(e) => {
-          setCentroCusto("");
-        }}
-        type="button"
-        form="formCentroCusto"
-        className="text-white rounded cursor-pointer items-center bg-yellow-200 border-2 my-4 py-1 px-6 ml-4"
-      >
-        Limpar
-      </Button>
-    </form>
+        <Divider orientation="left">Registro de Centro de custo</Divider>
+        <Row>
+          <Col span={16} offset={0}>
+            <Form.Item
+              label="Descrição"
+              name="titulo"
+              rules={[{ required: true }]}
+              form={form}
+            >
+              <Input placeholder="Nome do Centro de custo" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={6} offset={0}>
+            <Form.Item
+              name="tipo"
+              label="Tipo da Conta"
+              rules={[{ required: true, message: "Please pick an item!" }]}
+            >
+              <Radio.Group>
+                <Radio.Button value="Pagar">Pagar</Radio.Button>
+                <Radio.Button value="Receber">Receber</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={8} offset={0}>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="mr-4"
+                // onClick={handleSubmit}
+              >
+                Salvar
+              </Button>
+              <Button danger htmlType="button" onClick={onReset}>
+                Limpar
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </Col>
   );
 }

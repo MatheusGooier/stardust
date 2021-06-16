@@ -1,6 +1,13 @@
 export default function reducer(state, action) {
   switch (action.type) {
     case "GET_TODOS":
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "BRL",
+      });
+      action.payload.forEach((element) => {
+        element.fPrice = formatter.format(element.price);
+      });
       return {
         ...state,
         todos: action.payload,

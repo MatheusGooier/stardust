@@ -53,7 +53,6 @@ export default function reducer(state, action) {
         currency: "BRL",
       });
       action.payload.forEach((element) => {
-        console.log("element", element);
         element.fPrice = formatter.format(element.price);
       });
       return {

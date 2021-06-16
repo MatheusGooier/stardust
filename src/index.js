@@ -26,12 +26,10 @@ const App = () => {
         <ThemeProvider theme={theme.value === "light" ? lightTheme : darkTheme}>
           <>
             <GlobalStyles />
-
             <HeaderMenu
               handleThemeChange={handleThemeChange}
               themeChecked={theme.currentChecked}
             />
-
             <Route path="/" exact={true} component={TodoPage} />
             <Route path="/cc" component={CcPage} />
             <Route path="/eventos" component={EventosPage} />

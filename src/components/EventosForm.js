@@ -166,7 +166,7 @@ export default function EventosForm() {
           <Divider orientation="left">Registro de evento</Divider>
 
           <Form.Item
-            label="Título"
+            label="Nome do evento"
             name="titulo"
             rules={[{ required: true }]}
             form={form}
@@ -228,21 +228,23 @@ export default function EventosForm() {
                 <TimePicker placeholder="00:00:00" format="HH:mm:ss" />
               </Form.Item>
             </Col>
+            <Col span={8} offset={1}>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="mr-4"
+                  // onClick={handleSubmit}
+                >
+                  Salvar
+                </Button>
+                <Button danger htmlType="button" onClick={onReset}>
+                  Limpar
+                </Button>
+              </Form.Item>
+            </Col>
           </Row>
           {/* <Form.Item {...buttonItemLayout}> */}
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="mr-4"
-              // onClick={handleSubmit}
-            >
-              Salvar
-            </Button>
-            <Button danger htmlType="button" onClick={onReset}>
-              Limpar
-            </Button>
-          </Form.Item>
         </Form>
         <Title level={5}>Contas a receber </Title>
         <EventosParcelas />

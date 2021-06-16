@@ -87,15 +87,12 @@ export default function EventoParcelas() {
   };
 
   const handleDateChange = (date, dateString) => {
-    console.log("date", date);
-    console.log("dateString", dateString);
     if (!!date) {
       setTodo({ dataVencimento: dateString });
     }
   };
 
   const onFinish = async (values) => {
-    console.log("values", values);
     const newValues = {
       ...values,
       dataVencimento: values["dataVencimento"].format(dateFormat),
@@ -115,7 +112,6 @@ export default function EventoParcelas() {
         eventoId: state.currentEvento.id,
       }
     );
-    console.log("response:", response);
     dispatch({ type: "ADD_EVENTO_TODOS", payload: response.data });
   };
 
@@ -181,7 +177,7 @@ export default function EventoParcelas() {
                   />
                 </Form.Item>
               </Col>
-              <Col span={8} offset={5}>
+              <Col span={8} offset={4}>
                 <Button type="primary" block htmlType="submit">
                   Adicionar parcela
                 </Button>
