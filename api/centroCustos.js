@@ -2,18 +2,17 @@ const mongoose = require("mongoose");
 
 const uri = process.env.DB_URI;
 
-const todosSchema = new mongoose.Schema({
+const centroCustoSchema = new mongoose.Schema({
   // id: String,
   titulo: String,
-  text: String,
-  price: Number,
-  complete: Boolean,
   tipo: String,
-  dataVencimento: Date,
-  centroCusto: Array,
 });
 
-const Todos = mongoose.model("Todos", todosSchema, "Todo");
+const CentroCustos = mongoose.model(
+  "centroCustos",
+  centroCustoSchema,
+  "CentroCusto"
+);
 
 mongoose.connect(
   uri,
@@ -25,31 +24,31 @@ mongoose.connect(
 
 module.exports = function (req, res) {
   if (req.method === "GET") {
-    Todos.find()
-      .then((todo) => {
-        res.status(200).json(todo);
+    CentroCustos.find()
+      .then((cc) => {
+        res.status(200).json(cc);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "POST") {
-    const newTodo = new Todos(req.body);
-    newTodo
+    const newCc = new CentroCustos(req.body);
+    newCc
       .save()
-      .then((newTodo) => {
-        res.status(200).json(newTodo);
+      .then((newCc) => {
+        res.status(200).json(newCc);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "PUT") {
-    const { todo, _id } = req.body;
-    Todos.findByIdAndUpdate(_id, todo, { returnOriginal: false })
-      .then((updatedTodo) => {
-        res.status(200).json(updatedTodo);
+    const { cc, _id } = req.body;
+    CentroCustos.findByIdAndUpdate(_id, cc, { returnOriginal: false })
+      .then((updatedCc) => {
+        res.status(200).json(updatedCc);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "DELETE") {
     const { _id } = req.body;
-    Todos.findByIdAndDelete(_id)
-      .then((deletedTodo) => {
-        res.status(200).json(deletedTodo);
+    CentroCustos.findByIdAndDelete(_id)
+      .then((deletedCc) => {
+        res.status(200).json(deletedCc);
       })
       .catch((error) => res.status(500).json(error.message));
   }

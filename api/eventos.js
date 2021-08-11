@@ -2,18 +2,16 @@ const mongoose = require("mongoose");
 
 const uri = process.env.DB_URI;
 
-const todosSchema = new mongoose.Schema({
+const EventoSchema = new mongoose.Schema({
   // id: String,
   titulo: String,
   text: String,
+  dataEvento: Date,
   price: Number,
-  complete: Boolean,
-  tipo: String,
-  dataVencimento: Date,
-  centroCusto: Array,
+  horarioEvento: String,
 });
 
-const Todos = mongoose.model("Todos", todosSchema, "Todo");
+const Eventos = mongoose.model("eventos", EventoSchema, "Evento");
 
 mongoose.connect(
   uri,
@@ -25,31 +23,31 @@ mongoose.connect(
 
 module.exports = function (req, res) {
   if (req.method === "GET") {
-    Todos.find()
-      .then((todo) => {
-        res.status(200).json(todo);
+    Eventos.find()
+      .then((evento) => {
+        res.status(200).json(evento);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "POST") {
-    const newTodo = new Todos(req.body);
-    newTodo
+    const newEvento = new Eventos(req.body);
+    newEvento
       .save()
-      .then((newTodo) => {
-        res.status(200).json(newTodo);
+      .then((newEvento) => {
+        res.status(200).json(newEvento);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "PUT") {
-    const { todo, _id } = req.body;
-    Todos.findByIdAndUpdate(_id, todo, { returnOriginal: false })
-      .then((updatedTodo) => {
-        res.status(200).json(updatedTodo);
+    const { evento, _id } = req.body;
+    Eventos.findByIdAndUpdate(_id, evento, { returnOriginal: false })
+      .then((updatedEvento) => {
+        res.status(200).json(updatedEvento);
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "DELETE") {
     const { _id } = req.body;
-    Todos.findByIdAndDelete(_id)
-      .then((deletedTodo) => {
-        res.status(200).json(deletedTodo);
+    Eventos.findByIdAndDelete(_id)
+      .then((deletedEvento) => {
+        res.status(200).json(deletedEvento);
       })
       .catch((error) => res.status(500).json(error.message));
   }
