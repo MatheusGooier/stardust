@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.15.1",
     "axios": "^0.21.1",
+    "mongoose": "^5.13.6",
     "react": "0.0.0-1214b302e",
     "react-dom": "0.0.0-1214b302e",
     "react-router-dom": "^5.2.0",
