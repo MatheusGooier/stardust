@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-template-curly-in-string */
 import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
@@ -30,7 +32,7 @@ export default function CcForm() {
   const onFinish = async (values) => {
     if (currentCentroCusto.titulo) {
       const reponse = await axios.patch(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/${currentCentroCusto.id}`,
+        `http://localhost:3001/centroCustos/${currentCentroCusto.id}`,
         {
           titulo: values.titulo,
           tipo: values.tipo,
@@ -38,14 +40,11 @@ export default function CcForm() {
       );
       dispatch({ type: "UPDATE_CC", payload: reponse.data });
     } else {
-      const response = await axios.post(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/`,
-        {
-          id: uuid(),
-          titulo: values.titulo,
-          tipo: values.tipo,
-        }
-      );
+      const response = await axios.post(`http://localhost:3001/centroCustos/`, {
+        id: uuid(),
+        titulo: values.titulo,
+        tipo: values.tipo,
+      });
       dispatch({ type: "ADD_CC", payload: response.data });
     }
     setCentroCusto("");
@@ -63,8 +62,8 @@ export default function CcForm() {
       });
     } else {
       onReset();
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentCentroCusto.id, currentCentroCusto]);
+    }
+  }, [currentCentroCusto]);
 
   const onReset = () => {
     formRef.current.resetFields();
@@ -72,7 +71,7 @@ export default function CcForm() {
   };
 
   return (
-    <Col span={12} offset={6}>
+    <Col span={16} offset={4}>
       <Form
         onFinish={onFinish}
         ref={formRef}
@@ -94,9 +93,7 @@ export default function CcForm() {
               <Input placeholder="Nome do Centro de custo" />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
-          <Col span={6} offset={0}>
+          <Col span={6} offset={1}>
             <Form.Item
               name="tipo"
               label="Tipo da Conta"
@@ -108,6 +105,8 @@ export default function CcForm() {
               </Radio.Group>
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
           <Col span={8} offset={0}>
             <Form.Item>
               <Button

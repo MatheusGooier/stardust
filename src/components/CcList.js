@@ -37,7 +37,7 @@ export default function CcList() {
             key="list-event-delete"
             onClick={async () => {
               await axios.delete(
-                `https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos/${record.id}`
+                `http://localhost:3001/centroCustos/${record.id}`
               );
               dispatch({ type: "REMOVE_CC", payload: record });
             }}

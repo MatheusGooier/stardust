@@ -21,6 +21,7 @@ export default function EventosCalendario() {
   }
 
   const onSelect = (value) => {
+    dispatch({ type: "SET_EVENTO_TODOS", payload: [] });
     dispatch({ type: "SET_CURRENT_EVENTO", payload: {} });
     dispatch({ type: "SET_CALENDARDAY", payload: value.format(dateFormat) });
   };

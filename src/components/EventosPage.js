@@ -13,7 +13,7 @@ export default function EventosPage() {
 
     useEffect(() => {
       getData();
-    }, []);
+    }, [endpoint]);
 
     const getData = async () => {
       const response = await axios.get(endpoint);
@@ -26,9 +26,7 @@ export default function EventosPage() {
     const eventoInitialState = useContext(EventosContext);
     const [state, dispatch] = useReducer(eventosReducer, eventoInitialState);
 
-    const savedEventos = useAPI(
-      "https://hooks-api-matheusalex-hotmailcom.vercel.app/eventos"
-    );
+    const savedEventos = useAPI("http://localhost:3001/eventos");
 
     useEffect(() => {
       dispatch({

@@ -20,7 +20,7 @@ import EventosContext from "./contexts/eventoContext";
 import currencyList from "./globals/currency";
 import locale from "./globals/locale";
 import EventosParcelas from "./EventosParcelas";
-const { Title } = Typography;
+const { Text } = Typography;
 
 export default function EventosForm() {
   const formRef = React.createRef();
@@ -34,7 +34,7 @@ export default function EventosForm() {
   //Criação do Evento
   const [evento, setEvento] = useState("");
   const {
-    state: { currentEvento = {} },
+    state: { currentEvento = {}, eventoTodos = [] },
     dispatch,
   } = useContext(EventosContext);
 
@@ -49,15 +49,16 @@ export default function EventosForm() {
         titulo: currentEvento.titulo,
         text: currentEvento.text,
         price: currentEvento.price,
-        dataEvento: moment(momentDataEvento),
+        dataEvento: momentDataEvento,
         horarioEvento: moment(currentEvento.horarioEvento),
       });
     } else {
       onReset();
     }
-  }, [currentEvento.id, currentEvento]);
+  }, [currentEvento]);
 
   const onReset = () => {
+    dispatch({ type: "SET_EVENTO_TODOS", payload: [] });
     formRef.current.resetFields();
     setEvento({ ...evento, dataEvento: moment() });
   };
@@ -88,7 +89,7 @@ export default function EventosForm() {
 
       if (evento.titulo) {
         const reponse = await axios.patch(
-          `https://hooks-api-matheusalex-hotmailcom.vercel.app/eventos/${currentEvento.id}`,
+          `http://localhost:3001/eventos/${currentEvento.id}`,
           {
             titulo: newValues.titulo,
             dataEvento: newValues.dataEvento,
@@ -99,17 +100,14 @@ export default function EventosForm() {
         );
         dispatch({ type: "UPDATE_EVENTO", payload: reponse.data });
       } else {
-        const response = await axios.post(
-          `https://hooks-api-matheusalex-hotmailcom.vercel.app/eventos/`,
-          {
-            id: uuid(),
-            titulo: newValues.titulo,
-            text: newValues.text,
-            dataEvento: newValues.dataEvento,
-            price: newValues.price,
-            horarioEvento: newValues.horarioEvento || "",
-          }
-        );
+        const response = await axios.post(`http://localhost:3001/eventos/`, {
+          id: uuid(),
+          titulo: newValues.titulo,
+          text: newValues.text,
+          dataEvento: newValues.dataEvento,
+          price: newValues.price,
+          horarioEvento: newValues.horarioEvento || "",
+        });
         dispatch({ type: "ADD_EVENTO", payload: response.data });
       }
     };
@@ -152,6 +150,21 @@ export default function EventosForm() {
       }
     };
 
+    const temDivergencia = (valor) => {
+      let TotalParcelas = 0;
+      console.log(eventoTodos);
+      if (
+        Object.keys(eventoTodos).length !== 0 &&
+        eventoTodos.constructor !== Object
+      ) {
+        eventoTodos.forEach((element) => {
+          TotalParcelas = TotalParcelas + element.price;
+        });
+        return valor !== TotalParcelas;
+      }
+      return false;
+    };
+
     return (
       <Col span={22} offset={1}>
         <Form
@@ -186,7 +199,7 @@ export default function EventosForm() {
             />
           </Form.Item>
           <Row>
-            <Col span={4} offset={0}>
+            <Col span={6} offset={0}>
               <Form.Item
                 label="Valor do ensaio"
                 name="price"
@@ -204,7 +217,7 @@ export default function EventosForm() {
                 />
               </Form.Item>
             </Col>
-            <Col span={4} offset={1}>
+            <Col span={6} offset={1}>
               <Form.Item
                 label="Data do evento"
                 name="dataEvento"
@@ -219,7 +232,7 @@ export default function EventosForm() {
                 />
               </Form.Item>
             </Col>
-            <Col span={4} offset={1}>
+            <Col span={6} offset={1}>
               <Form.Item
                 label="Horario do evento"
                 name="horarioEvento"
@@ -228,7 +241,17 @@ export default function EventosForm() {
                 <TimePicker placeholder="00:00:00" format="HH:mm:ss" />
               </Form.Item>
             </Col>
-            <Col span={8} offset={1}>
+          </Row>
+          {temDivergencia(currentEvento.price) ? (
+            <Row>
+              <Text type="danger">
+                * Este evento possui divergecia entre valor geral e total das
+                parcelas
+              </Text>
+            </Row>
+          ) : null}
+          <Row>
+            <Col span={8} offset={0}>
               <Form.Item>
                 <Button
                   type="primary"
@@ -246,7 +269,7 @@ export default function EventosForm() {
           </Row>
           {/* <Form.Item {...buttonItemLayout}> */}
         </Form>
-        <Title level={5}>Contas a receber </Title>
+        <Divider orientation="left">Registro de parcelas</Divider>
         <EventosParcelas />
       </Col>
     );

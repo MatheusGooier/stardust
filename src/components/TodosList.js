@@ -55,9 +55,7 @@ export default function TodoList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(
-                `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`
-              );
+              await axios.delete(`http://localhost:3001/todos/${record.id}`);
               dispatch({ type: "REMOVE_TODO", payload: record });
             }}
           >
@@ -102,7 +100,7 @@ export default function TodoList() {
                 className={record.complete ? "text-red-500" : ""}
                 onClick={async () => {
                   const response = await axios.patch(
-                    `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${record.id}`,
+                    `http://localhost:3001/todos/${record.id}`,
                     { complete: !record.complete }
                   );
                   dispatch({ type: "TOGGLE_TODO", payload: response.data });

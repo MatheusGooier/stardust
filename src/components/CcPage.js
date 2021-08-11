@@ -12,7 +12,7 @@ export default function ccPage() {
 
     useEffect(() => {
       getData();
-    }, []);
+    }, [endpoint]);
 
     const getData = async () => {
       const response = await axios.get(endpoint);
@@ -28,9 +28,7 @@ export default function ccPage() {
       centroCustoInitialState
     );
 
-    const savedCc = useAPI(
-      "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos"
-    );
+    const savedCc = useAPI("http://localhost:3001/centroCustos");
 
     useEffect(() => {
       dispatch({

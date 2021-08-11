@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useContext, useState } from "react";
 import {
   Table,
@@ -8,6 +9,7 @@ import {
   Row,
   InputNumber,
   DatePicker,
+  Divider,
 } from "antd";
 import EventosContext from "./contexts/eventoContext";
 import locale from "./globals/locale";
@@ -98,20 +100,17 @@ export default function EventoParcelas() {
       dataVencimento: values["dataVencimento"].format(dateFormat),
     };
 
-    const response = await axios.post(
-      `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/`,
-      {
-        id: uuid(),
-        titulo: newValues.titulo,
-        text: newValues.text || "",
-        price: newValues.price,
-        complete: false,
-        tipo: "Receber",
-        dataVencimento: newValues.dataVencimento,
-        centroCuesto: [],
-        eventoId: state.currentEvento.id,
-      }
-    );
+    const response = await axios.post(`http://localhost:3001/todos/`, {
+      id: uuid(),
+      titulo: newValues.titulo,
+      text: newValues.text || "",
+      price: newValues.price,
+      complete: false,
+      tipo: "Receber",
+      dataVencimento: newValues.dataVencimento,
+      centroCusto: [],
+      eventoId: state.currentEvento.id,
+    });
     dispatch({ type: "ADD_EVENTO_TODOS", payload: response.data });
   };
 
@@ -144,7 +143,7 @@ export default function EventoParcelas() {
               />
             </Form.Item>
             <Row>
-              <Col span={5} offset={0}>
+              <Col span={6} offset={0}>
                 <Form.Item
                   label="Valor da parcela"
                   name="price"
@@ -162,7 +161,7 @@ export default function EventoParcelas() {
                   />
                 </Form.Item>
               </Col>
-              <Col span={5} offset={1}>
+              <Col span={8} offset={1}>
                 <Form.Item
                   label="Data de vencimento"
                   name="dataVencimento"
@@ -177,7 +176,9 @@ export default function EventoParcelas() {
                   />
                 </Form.Item>
               </Col>
-              <Col span={8} offset={4}>
+            </Row>
+            <Row>
+              <Col span={8} offset={0}>
                 <Button type="primary" block htmlType="submit">
                   Adicionar parcela
                 </Button>
@@ -185,6 +186,7 @@ export default function EventoParcelas() {
             </Row>
           </Form>
         </Col>
+        <Divider orientation="left">Parcelas vinculadas ao evento</Divider>
         <Table
           columns={columns}
           dataSource={state.eventoTodos}

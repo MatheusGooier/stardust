@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
@@ -61,29 +62,37 @@ export default function TodoForm() {
   };
 
   //Criação do currentTodo
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState({});
   const {
     state: { currentTodo = {} },
     dispatch,
   } = useContext(TodosContext);
 
   useEffect(() => {
-    if (currentTodo) {
+    if (currentTodo.id) {
       setTodo(currentTodo);
-      var momentDataVencimento = moment(currentTodo.dataVencimento, dateFormat);
       form.setFieldsValue({
         titulo: currentTodo.titulo,
         text: currentTodo.text,
         price: currentTodo.price,
         complete: currentTodo.complete,
         tipo: currentTodo.tipo,
-        dataVencimento: moment(momentDataVencimento),
+        dataVencimento: moment(currentTodo.dataVencimento, dateFormat),
         centroCusto: currentTodo.centroCusto,
       });
     } else {
-      onReset();
+      setTodo({});
+      form.setFieldsValue({
+        titulo: null,
+        text: null,
+        price: null,
+        complete: null,
+        tipo: "Pagar",
+        dataVencimento: moment(),
+        centroCusto: null,
+      });
     }
-  }, [currentTodo.id, currentTodo]);
+  }, [currentTodo.id]);
 
   //Busca o centro de custo
   const useAPI = (endpoint) => {
@@ -91,7 +100,7 @@ export default function TodoForm() {
 
     useEffect(() => {
       getData();
-    });
+    }, [endpoint]);
 
     const getData = async () => {
       const response = await axios.get(endpoint);
@@ -117,9 +126,7 @@ export default function TodoForm() {
     },
   };
 
-  const savedCentroCustos = useAPI(
-    "https://hooks-api-matheusalex-hotmailcom.vercel.app/centroCustos"
-  );
+  const savedCentroCustos = useAPI("http://localhost:3001/centroCustos");
 
   const filteredCc = savedCentroCustos.reduce(function (addCC, cc) {
     if (cc.tipo === selectedTipo) {
@@ -129,33 +136,34 @@ export default function TodoForm() {
   }, []);
 
   const handleSubmit = async (values) => {
+    const newValues = {
+      ...values,
+      dataVencimento: moment(values["dataVencimento"]).format(dateFormat),
+    };
     if (currentTodo.titulo) {
       const reponse = await axios.patch(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/${currentTodo.id}`,
+        `http://localhost:3001/todos/${currentTodo.id}`,
         {
-          titulo: values.titulo || "Sem título",
-          text: values.text || "Sem descrição",
-          price: values.price || 0,
-          tipo: values.tipo,
-          dataVencimento: values.dataVencimento,
-          centroCusto: values.centroCusto,
+          titulo: newValues.titulo || "Sem título",
+          text: newValues.text || "Sem descrição",
+          price: newValues.price || 0,
+          tipo: newValues.tipo,
+          dataVencimento: newValues.dataVencimento,
+          centroCusto: newValues.centroCusto,
         }
       );
       dispatch({ type: "UPDATE_TODO", payload: reponse.data });
     } else {
-      const response = await axios.post(
-        `https://hooks-api-matheusalex-hotmailcom.vercel.app/todos/`,
-        {
-          id: uuid(),
-          titulo: values.titulo || "Sem título",
-          text: values.text || "Sem descrição",
-          price: values.price || 0,
-          complete: false,
-          tipo: values.tipo,
-          dataVencimento: values.dataVencimento,
-          centroCusto: values.centroCusto,
-        }
-      );
+      const response = await axios.post(`http://localhost:3001/todos/`, {
+        id: uuid(),
+        titulo: newValues.titulo || "Sem título",
+        text: newValues.text || "Sem descrição",
+        price: newValues.price || 0,
+        complete: false,
+        tipo: newValues.tipo,
+        dataVencimento: newValues.dataVencimento,
+        centroCusto: newValues.centroCusto,
+      });
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
     setTodo("");
@@ -165,14 +173,21 @@ export default function TodoForm() {
     selectedTipo = value.target.value;
   };
 
-  const onReset = (e) => {
-    setTodo("");
+  const onReset = () => {
     dispatch({ type: "SET_CURRENT_TODO", payload: {} });
-    form.setFieldsValue({ tipo: selectedTipo });
+    form.setFieldsValue({
+      titulo: null,
+      text: null,
+      price: null,
+      complete: null,
+      tipo: "Pagar",
+      dataVencimento: moment(),
+      centroCusto: null,
+    });
   };
 
   return (
-    <Col span={12} offset={6}>
+    <Col span={16} offset={4}>
       <Form
         onFinish={handleSubmit}
         ref={formRef}
@@ -207,7 +222,7 @@ export default function TodoForm() {
           </Col>
         </Row>
         <Row>
-          <Col span={4} offset={0}>
+          <Col span={6} offset={0}>
             <Form.Item
               label="Valor do título"
               name="price"
@@ -225,7 +240,7 @@ export default function TodoForm() {
               />
             </Form.Item>
           </Col>
-          <Col span={4} offset={1}>
+          <Col span={6} offset={1}>
             <Form.Item
               label="Data do evento"
               name="dataVencimento"
@@ -240,7 +255,7 @@ export default function TodoForm() {
               />
             </Form.Item>
           </Col>
-          <Col span={6} offset={1}>
+          <Col span={8} offset={1}>
             <Form.Item
               name="tipo"
               label="Tipo da Conta"

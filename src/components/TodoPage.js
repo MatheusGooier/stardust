@@ -12,7 +12,7 @@ export default function TodoPage() {
 
     useEffect(() => {
       getData();
-    }, []);
+    }, [endpoint]);
 
     const getData = async () => {
       const response = await axios.get(endpoint);
@@ -24,9 +24,7 @@ export default function TodoPage() {
   const App = () => {
     const todoInitialState = useContext(TodosContext);
     const [state, dispatch] = useReducer(todosReducer, todoInitialState);
-    const savedTodos = useAPI(
-      "https://hooks-api-matheusalex-hotmailcom.vercel.app/todos"
-    );
+    const savedTodos = useAPI("http://localhost:3001/todos");
     useEffect(() => {
       dispatch({
         type: "GET_TODOS",

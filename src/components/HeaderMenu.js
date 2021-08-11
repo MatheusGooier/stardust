@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Image, Switch, Layout, Menu, Dropdown } from "antd";
-const { Header, Sider, Footer } = Layout;
+import { Switch, Layout, Menu } from "antd";
+// import { Avatar, Image, Switch, Layout, Menu } from "antd";
+const { Header } = Layout;
 
 // export default function Menu() {
 const HeaderMenu = (props) => {
@@ -12,8 +13,11 @@ const HeaderMenu = (props) => {
   };
 
   return (
-    <div className="w-full h-16 flex bg-gray-800">
-      <div className="w-11/12 m-0">
+    <div
+      className="w-full h-16 flex bg-gray-800 fixed"
+      style={{ zIndex: 9999, backgroundColor: "#031529" }}
+    >
+      <div className="w-full m-0">
         <Layout className="layout">
           <Header>
             <div className="logo" />
@@ -37,22 +41,22 @@ const HeaderMenu = (props) => {
           </Header>
         </Layout>
       </div>
-      <div className="w-1/12 m-0 max-w-xs justify-center flex items-center">
+      <div className="w-32 justify-center flex items-center">
+        <Switch
+          checked={checked}
+          onChange={() => {
+            handleChange();
+
+            props.handleThemeChange(!checked);
+          }}
+          checkedChildren="Dark"
+          unCheckedChildren="Light"
+        />
+      </div>
+      {/* <div className="w-1/12 m-0 max-w-xs justify-center flex items-center bg-gray-800">
+  
+
         <div>
-          {" "}
-          <Switch
-            checked={checked}
-            onChange={() => {
-              handleChange();
-
-              props.handleThemeChange(!checked);
-            }}
-            checkedChildren="Dark"
-            unCheckedChildren="Light"
-          />
-        </div>
-
-        <div className="ml-5">
           {" "}
           <Avatar
             size={50}
@@ -65,7 +69,7 @@ const HeaderMenu = (props) => {
             }
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

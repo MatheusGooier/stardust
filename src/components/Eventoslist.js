@@ -18,9 +18,7 @@ export default function EventosList() {
 
   const CreateEventoTodos = async (event) => {
     try {
-      const todos = await axios.get(
-        "https://hooks-api-matheusalex-hotmailcom.vercel.app/todos"
-      );
+      const todos = await axios.get("http://localhost:3001/todos");
       const EventoTodos = todos.data.filter(
         (todo) => todo.eventoId === event.id
       );
@@ -61,7 +59,7 @@ export default function EventosList() {
                 className="text-red-500"
                 onClick={async () => {
                   await axios.delete(
-                    `https://hooks-api-matheusalex-hotmailcom.vercel.app/EVENTOS/${evento.id}`
+                    `http://localhost:3001/EVENTOS/${evento.id}`
                   );
                   dispatch({ type: "REMOVE_EVENTO", payload: evento });
                 }}

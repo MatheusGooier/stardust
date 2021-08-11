@@ -16,6 +16,7 @@ export const lightTheme = {
   listLineHover: "#D6D3D1",
   alertText: "#363537",
   buttonBorder: "#292524",
+  switchBg: "#78716C",
 };
 
 export const darkTheme = {
@@ -35,5 +36,6 @@ export const darkTheme = {
   listLine: "#292524",
   listLineHover: "#78716C",
   alertText: "rgba(255, 255, 255, 0.65)",
-  buttonBorder: "#A8A29E",
+  buttonBorder: "#777",
+  switchBg: "#78716C",
 };

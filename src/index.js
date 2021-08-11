@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect } from "react";
+import React, { useContext, useReducer } from "react";
 import ReactDOM from "react-dom";
 import TodoPage from "./components/TodoPage";
 import CcPage from "./components/CcPage";
@@ -10,6 +10,7 @@ import { GlobalStyles } from "./global";
 import { BrowserRouter, Route } from "react-router-dom";
 import ThemeContext from "./components/contexts/themeContext";
 import themeReducer from "./components/reducers/themeReducer";
+import Footer from "./components/Footer";
 import "./default.css";
 
 const App = () => {
@@ -30,9 +31,12 @@ const App = () => {
               handleThemeChange={handleThemeChange}
               themeChecked={theme.currentChecked}
             />
-            <Route path="/" exact={true} component={TodoPage} />
-            <Route path="/cc" component={CcPage} />
-            <Route path="/eventos" component={EventosPage} />
+            <div className="mt-16">
+              <Route path="/" exact={true} component={TodoPage} />
+              <Route path="/cc" component={CcPage} />
+              <Route path="/eventos" component={EventosPage} />
+            </div>
+            <Footer></Footer>
           </>
         </ThemeProvider>
       </ThemeContext.Provider>
