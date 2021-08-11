@@ -62,7 +62,7 @@ export default function TodoForm() {
   };
 
   //Criação do currentTodo
-  const [todo, setTodo] = useState({});
+  // const [todo, setTodo] = useState({});
   const {
     state: { currentTodo = {} },
     dispatch,
@@ -70,7 +70,7 @@ export default function TodoForm() {
 
   useEffect(() => {
     if (currentTodo.id) {
-      setTodo(currentTodo);
+      // setTodo(currentTodo);
       form.setFieldsValue({
         titulo: currentTodo.titulo,
         text: currentTodo.text,
@@ -81,7 +81,7 @@ export default function TodoForm() {
         centroCusto: currentTodo.centroCusto,
       });
     } else {
-      setTodo({});
+      // setTodo({});
       form.setFieldsValue({
         titulo: null,
         text: null,
@@ -109,11 +109,11 @@ export default function TodoForm() {
     return data;
   };
 
-  const handleDateChange = (date, dateString) => {
-    if (!!date) {
-      setTodo({ dataVencimento: dateString });
-    }
-  };
+  // const handleDateChange = (date, dateString) => {
+  //   if (!!date) {
+  //     setTodo({ dataVencimento: dateString });
+  //   }
+  // };
 
   const validateMessages = {
     required: "${label} é obrigatório",
@@ -166,7 +166,7 @@ export default function TodoForm() {
       });
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
-    setTodo("");
+    // setTodo("");
   };
 
   const onchangeTipo = (value) => {
@@ -250,7 +250,7 @@ export default function TodoForm() {
               <DatePicker
                 format={dateFormat}
                 placeholder="01/01/2001"
-                onChange={handleDateChange}
+                // onChange={handleDateChange}
                 allowClear={false}
               />
             </Form.Item>

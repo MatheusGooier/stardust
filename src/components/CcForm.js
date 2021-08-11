@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-template-curly-in-string */
 import React from "react";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import axios from "axios";
@@ -11,8 +11,6 @@ export default function CcForm() {
   const formRef = React.createRef();
   const [form] = Form.useForm();
 
-  //Criação do centroCusto
-  const [centroCusto, setCentroCusto] = useState("");
   const {
     state: { currentCentroCusto = {} },
     dispatch,
@@ -47,7 +45,7 @@ export default function CcForm() {
       });
       dispatch({ type: "ADD_CC", payload: response.data });
     }
-    setCentroCusto("");
+    // setCentroCusto("");
   };
 
   useEffect(() => {
@@ -55,7 +53,7 @@ export default function CcForm() {
       Object.keys(currentCentroCusto).length !== 0 ||
       currentCentroCusto.constructor !== Object
     ) {
-      setCentroCusto(currentCentroCusto);
+      // setCentroCusto(currentCentroCusto);
       form.setFieldsValue({
         titulo: currentCentroCusto.titulo,
         tipo: currentCentroCusto.tipo,
@@ -67,7 +65,7 @@ export default function CcForm() {
 
   const onReset = () => {
     formRef.current.resetFields();
-    setCentroCusto("");
+    // setCentroCusto("");
   };
 
   return (

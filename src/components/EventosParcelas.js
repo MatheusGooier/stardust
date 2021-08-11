@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Table,
   Button,
@@ -18,7 +18,7 @@ import { uuid } from "uuidv4";
 import currencyList from "./globals/currency";
 
 export default function EventoParcelas() {
-  const [todo, setTodo] = useState("");
+  // const [todo, setTodo] = useState("");
 
   const { state, dispatch } = useContext(EventosContext);
 
@@ -88,11 +88,11 @@ export default function EventoParcelas() {
     },
   };
 
-  const handleDateChange = (date, dateString) => {
-    if (!!date) {
-      setTodo({ dataVencimento: dateString });
-    }
-  };
+  // const handleDateChange = (date, dateString) => {
+  //   if (!!date) {
+  //     setTodo({ dataVencimento: dateString });
+  //   }
+  // };
 
   const onFinish = async (values) => {
     const newValues = {
@@ -171,7 +171,7 @@ export default function EventoParcelas() {
                   <DatePicker
                     format={dateFormat}
                     placeholder="01/01/2001"
-                    onChange={handleDateChange}
+                    // onChange={handleDateChange}
                     allowClear={false}
                   />
                 </Form.Item>
