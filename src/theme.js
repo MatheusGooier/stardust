@@ -17,6 +17,7 @@ export const lightTheme = {
   alertText: "#363537",
   buttonBorder: "#292524",
   switchBg: "#78716C",
+  footerBg: "rgba(229,231,235,var(--tw-bg-opacity))",
 };
 
 export const darkTheme = {
@@ -38,4 +39,5 @@ export const darkTheme = {
   alertText: "rgba(255, 255, 255, 0.65)",
   buttonBorder: "#777",
   switchBg: "#78716C",
+  footerBg: "rgba(31,41,55,var(--tw-bg-opacity))",
 };

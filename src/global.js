@@ -236,4 +236,18 @@ export const GlobalStyles = createGlobalStyle`
   .ant-empty-description {
     color:  ${({ theme }) => theme.text};
   }
+
+  .ant-input-affix-wrapper  {
+    background-color: ${({ theme }) => theme.inputBackgroundColor}
+  }
+
+  .bg-gray-800 {
+    --tw-bg-opacity: 1;
+    background-color: ${({ theme }) => theme.footerBg};
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0px;
+  }
   `;

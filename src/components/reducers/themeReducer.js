@@ -8,7 +8,6 @@ export default function reducer(state, action) {
     case "GET_THEME":
       return {
         ...state,
-        value: action.payload,
       };
     default:
       return state;

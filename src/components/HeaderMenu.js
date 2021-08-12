@@ -22,8 +22,13 @@ const HeaderMenu = (props) => {
           <Header>
             <div className="logo" />
             <Menu theme="dark" mode="horizontal">
-              <Menu.Item key="1">
+              <Menu.Item key="0">
                 <Link to={"/"} className="nav-link">
+                  Login
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="1">
+                <Link to={"/financeiro"} className="nav-link">
                   Financeiro
                 </Link>
               </Menu.Item>
@@ -43,7 +48,7 @@ const HeaderMenu = (props) => {
       </div>
       <div className="w-32 justify-center flex items-center">
         <Switch
-          checked={checked}
+          checked={props.themeChecked}
           onChange={() => {
             handleChange();
 
