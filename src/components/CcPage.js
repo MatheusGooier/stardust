@@ -5,6 +5,7 @@ import centroCustoReducer from "./reducers/centroCustoReducer";
 import CcList from "./CcList";
 import CcForm from "./CcForm";
 import axios from "axios";
+import BASE_URL from "./globals/baseUrl";
 
 export default function ccPage() {
   const useAPI = (endpoint) => {
@@ -27,8 +28,7 @@ export default function ccPage() {
       centroCustoReducer,
       centroCustoInitialState
     );
-
-    const savedCc = useAPI("http://localhost:3001/centroCustos");
+    const savedCc = useAPI(`${BASE_URL}/centroCustos`);
 
     useEffect(() => {
       dispatch({

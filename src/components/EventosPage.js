@@ -6,6 +6,7 @@ import eventosReducer from "./reducers/eventoReducer";
 import EventosList from "./Eventoslist";
 import axios from "axios";
 import EventosContext from "./contexts/eventoContext";
+import baseUrl from "./globals/baseUrl";
 
 export default function EventosPage() {
   const useAPI = (endpoint) => {
@@ -26,7 +27,7 @@ export default function EventosPage() {
     const eventoInitialState = useContext(EventosContext);
     const [state, dispatch] = useReducer(eventosReducer, eventoInitialState);
 
-    const savedEventos = useAPI("http://localhost:3001/eventos");
+    const savedEventos = useAPI(`${baseUrl}/eventos`);
 
     useEffect(() => {
       dispatch({

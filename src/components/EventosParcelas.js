@@ -16,6 +16,7 @@ import locale from "./globals/locale";
 import axios from "axios";
 import { uuid } from "uuidv4";
 import currencyList from "./globals/currency";
+import baseUrl from "./globals/baseUrl";
 
 export default function EventoParcelas() {
   // const [todo, setTodo] = useState("");
@@ -100,7 +101,7 @@ export default function EventoParcelas() {
       dataVencimento: values["dataVencimento"].format(dateFormat),
     };
 
-    const response = await axios.post(`http://localhost:3001/todos/`, {
+    const response = await axios.post(`${baseUrl}/todos/`, {
       id: uuid(),
       titulo: newValues.titulo,
       text: newValues.text || "",
@@ -133,12 +134,13 @@ export default function EventoParcelas() {
               rules={[{ required: true }]}
               form={form}
             >
-              <Input placeholder="Nome da parcela" />
+              <Input placeholder="Nome da parcela" id="EPtitulo" />
             </Form.Item>
             <Form.Item label="Descrição" name="text" form={form}>
               <Input.TextArea
                 rows="2"
                 placeholder="Detalhes sobre a parcela"
+                id="EPtext"
                 className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
               />
             </Form.Item>
@@ -151,6 +153,7 @@ export default function EventoParcelas() {
                   form={form}
                 >
                   <InputNumber
+                    id="EPprice"
                     style={{ width: "auto" }}
                     placeholder="R$ 0.00"
                     prefix="R$ "

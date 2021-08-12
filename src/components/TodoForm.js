@@ -20,6 +20,7 @@ import {
 import locale from "./globals/locale";
 import moment from "moment";
 import currencyList from "./globals/currency";
+import baseUrl from "./globals/baseUrl";
 
 let selectedTipo = "Pagar";
 const dateFormat = "DD/MM/YYYY";
@@ -126,7 +127,7 @@ export default function TodoForm() {
     },
   };
 
-  const savedCentroCustos = useAPI("http://localhost:3001/centroCustos");
+  const savedCentroCustos = useAPI(`${baseUrl}/centroCustos`);
 
   const filteredCc = savedCentroCustos.reduce(function (addCC, cc) {
     if (cc.tipo === selectedTipo) {
@@ -141,20 +142,17 @@ export default function TodoForm() {
       dataVencimento: moment(values["dataVencimento"]).format(dateFormat),
     };
     if (currentTodo.titulo) {
-      const reponse = await axios.patch(
-        `http://localhost:3001/todos/${currentTodo.id}`,
-        {
-          titulo: newValues.titulo || "Sem título",
-          text: newValues.text || "Sem descrição",
-          price: newValues.price || 0,
-          tipo: newValues.tipo,
-          dataVencimento: newValues.dataVencimento,
-          centroCusto: newValues.centroCusto,
-        }
-      );
+      const reponse = await axios.patch(`${baseUrl}/todos/${currentTodo.id}`, {
+        titulo: newValues.titulo || "Sem título",
+        text: newValues.text || "Sem descrição",
+        price: newValues.price || 0,
+        tipo: newValues.tipo,
+        dataVencimento: newValues.dataVencimento,
+        centroCusto: newValues.centroCusto,
+      });
       dispatch({ type: "UPDATE_TODO", payload: reponse.data });
     } else {
-      const response = await axios.post(`http://localhost:3001/todos/`, {
+      const response = await axios.post(`${baseUrl}/todos/`, {
         id: uuid(),
         titulo: newValues.titulo || "Sem título",
         text: newValues.text || "Sem descrição",

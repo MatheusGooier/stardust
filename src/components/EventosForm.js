@@ -20,11 +20,12 @@ import EventosContext from "./contexts/eventoContext";
 import currencyList from "./globals/currency";
 import locale from "./globals/locale";
 import EventosParcelas from "./EventosParcelas";
+import baseUrl from "./globals/baseUrl";
+
 const { Text } = Typography;
 
 export default function EventosForm() {
   const formRef = React.createRef();
-
   //Busca o dia de hoje e formata
   const dateFormat = "DD/MM/YYYY";
 
@@ -89,7 +90,7 @@ export default function EventosForm() {
 
       if (evento.titulo) {
         const reponse = await axios.patch(
-          `http://localhost:3001/eventos/${currentEvento.id}`,
+          `${baseUrl}/eventos/${currentEvento.id}`,
           {
             titulo: newValues.titulo,
             dataEvento: newValues.dataEvento,
@@ -100,7 +101,8 @@ export default function EventosForm() {
         );
         dispatch({ type: "UPDATE_EVENTO", payload: reponse.data });
       } else {
-        const response = await axios.post(`http://localhost:3001/eventos/`, {
+        // console.log(BASE_URL);
+        const response = await axios.post(`${baseUrl}/eventos/`, {
           id: uuid(),
           titulo: newValues.titulo,
           text: newValues.text,
@@ -152,7 +154,7 @@ export default function EventosForm() {
 
     const temDivergencia = (valor) => {
       let TotalParcelas = 0;
-      console.log(eventoTodos);
+
       if (
         Object.keys(eventoTodos).length !== 0 &&
         eventoTodos.constructor !== Object

@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useContext } from "react";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import { Table, Space, Divider } from "antd";
+import BASE_URL from "./globals/baseUrl";
 
 export default function CcList() {
   const { state, dispatch } = useContext(CentroCustoContext);
@@ -36,9 +37,7 @@ export default function CcList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(
-                `http://localhost:3001/centroCustos/${record.id}`
-              );
+              await axios.delete(`${BASE_URL}/centroCustos/${record.id}`);
               dispatch({ type: "REMOVE_CC", payload: record });
             }}
           >

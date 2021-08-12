@@ -5,6 +5,7 @@ import TodosContext from "./contexts/todoContext";
 import todosReducer from "./reducers/todoReducer";
 import TodoList from "./TodosList";
 import TodoForm from "./TodoForm";
+import baseUrl from "./globals/baseUrl";
 
 export default function TodoPage() {
   const useAPI = (endpoint) => {
@@ -24,7 +25,7 @@ export default function TodoPage() {
   const App = () => {
     const todoInitialState = useContext(TodosContext);
     const [state, dispatch] = useReducer(todosReducer, todoInitialState);
-    const savedTodos = useAPI("http://localhost:3001/todos");
+    const savedTodos = useAPI(`${baseUrl}/todos`);
     useEffect(() => {
       dispatch({
         type: "GET_TODOS",

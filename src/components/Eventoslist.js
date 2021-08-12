@@ -4,6 +4,7 @@ import { List, Divider, Button, Col } from "antd";
 import EventosContext from "./contexts/eventoContext";
 import axios from "axios";
 import returnStrDateFromObj from "./globals/returnStrDateFromObj";
+import baseUrl from "./globals/baseUrl";
 
 export default function EventosList() {
   const { state, dispatch } = useContext(EventosContext);
@@ -18,7 +19,7 @@ export default function EventosList() {
 
   const CreateEventoTodos = async (event) => {
     try {
-      const todos = await axios.get("http://localhost:3001/todos");
+      const todos = await axios.get(`${baseUrl}/todos`);
       const EventoTodos = todos.data.filter(
         (todo) => todo.eventoId === event.id
       );
@@ -58,9 +59,7 @@ export default function EventosList() {
                 key="list-event-delete"
                 className="text-red-500"
                 onClick={async () => {
-                  await axios.delete(
-                    `http://localhost:3001/EVENTOS/${evento.id}`
-                  );
+                  await axios.delete(`${baseUrl}/eventos/${evento.id}`);
                   dispatch({ type: "REMOVE_EVENTO", payload: evento });
                 }}
               >

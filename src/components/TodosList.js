@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import TodosContext from "./contexts/todoContext";
 import { Table, Space, Divider } from "antd";
 import "antd/dist/antd.css";
+import baseUrl from "./globals/baseUrl";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(TodosContext);
@@ -55,7 +56,7 @@ export default function TodoList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(`http://localhost:3001/todos/${record.id}`);
+              await axios.delete(`${baseUrl}/todos/${record.id}`);
               dispatch({ type: "REMOVE_TODO", payload: record });
             }}
           >
@@ -100,7 +101,7 @@ export default function TodoList() {
                 className={record.complete ? "text-red-500" : ""}
                 onClick={async () => {
                   const response = await axios.patch(
-                    `http://localhost:3001/todos/${record.id}`,
+                    `${baseUrl}/todos/${record.id}`,
                     { complete: !record.complete }
                   );
                   dispatch({ type: "TOGGLE_TODO", payload: response.data });
