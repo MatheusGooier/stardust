@@ -14,6 +14,7 @@ import themeReducer from "./components/reducers/themeReducer";
 import Footer from "./components/Footer";
 import "./default.css";
 import PrivateRoute from "./components/PrivateRoute";
+import { TitleComponent } from "./components/TitleComponent";
 
 const App = () => {
   const themeInitialState = useContext(ThemeContext);
@@ -22,6 +23,35 @@ const App = () => {
   const handleThemeChange = (checked) => {
     dispatch({ type: "TOGGLE_THEME", payload: checked });
   };
+
+  // withTitle function
+  const withTitle = ({ component: Component, title }) => {
+    return class Title extends React.Component {
+      render() {
+        return (
+          <React.Fragment>
+            <TitleComponent title={title} />
+            <Component {...this.props} />
+          </React.Fragment>
+        );
+      }
+    };
+  };
+
+  // Adding title
+  const LoginComponent = withTitle({ component: Login, title: "Login" });
+  const TodoPageComponent = withTitle({
+    component: TodoPage,
+    title: "Financeiro",
+  });
+  const CcPageComponent = withTitle({
+    component: CcPage,
+    title: "Centro de Custo",
+  });
+  const EventosPageComponent = withTitle({
+    component: EventosPage,
+    title: "Eventos",
+  });
 
   return (
     <BrowserRouter>
@@ -35,13 +65,19 @@ const App = () => {
             />
             <div className="mt-16">
               <Switch>
-                <Route path="/" exact component={Login} />
-                <PrivateRoute path="/financeiro" component={TodoPage} />
-                <PrivateRoute path="/cc" component={CcPage} />
-                <PrivateRoute path="/eventos" component={EventosPage} />
+                <Route path="/" exact component={LoginComponent} />
+                <PrivateRoute
+                  path="/financeiro"
+                  component={TodoPageComponent}
+                />
+                <PrivateRoute path="/cc" component={CcPageComponent} />
+                <PrivateRoute
+                  path="/eventos"
+                  component={EventosPageComponent}
+                />
               </Switch>
             </div>
-            <Footer></Footer>
+            <Footer />
           </>
         </ThemeProvider>
       </ThemeContext.Provider>

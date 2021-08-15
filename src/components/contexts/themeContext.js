@@ -1,7 +1,7 @@
 import React from "react";
 
 const ThemeContext = React.createContext({
-  value: "Dark",
+  value: "Light",
   currentChecked: false,
 });
 
