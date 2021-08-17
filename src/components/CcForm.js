@@ -31,7 +31,7 @@ export default function CcForm() {
   const onFinish = async (values) => {
     if (currentCentroCusto.titulo) {
       const reponse = await axios.patch(
-        `${BASE_URL}/centroCustos/${currentCentroCusto.id}`,
+        `${BASE_URL}/centroCustos/${currentCentroCusto._id}`,
         {
           titulo: values.titulo,
           tipo: values.tipo,

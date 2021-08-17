@@ -12,7 +12,7 @@ export default function EventosCalendario() {
     return (
       <ul className="events">
         {listData.map((evento) => (
-          <li key={evento.id}>
+          <li key={evento._id}>
             <Alert type="success" message={evento.titulo} />
           </li>
         ))}

@@ -61,28 +61,23 @@ export default function TodoForm() {
       currency: selectedCurrOpt.split("::")[1],
     }).format(value);
   };
-
-  //Criação do currentTodo
-  // const [todo, setTodo] = useState({});
   const {
     state: { currentTodo = {} },
     dispatch,
   } = useContext(TodosContext);
 
   useEffect(() => {
-    if (currentTodo.id) {
-      // setTodo(currentTodo);
+    if (currentTodo._id) {
       form.setFieldsValue({
         titulo: currentTodo.titulo,
         text: currentTodo.text,
         price: currentTodo.price,
         complete: currentTodo.complete,
         tipo: currentTodo.tipo,
-        dataVencimento: moment(currentTodo.dataVencimento, dateFormat),
+        dataVencimento: currentTodo.dataVencimento,
         centroCusto: currentTodo.centroCusto,
       });
     } else {
-      // setTodo({});
       form.setFieldsValue({
         titulo: null,
         text: null,
@@ -93,7 +88,7 @@ export default function TodoForm() {
         centroCusto: null,
       });
     }
-  }, [currentTodo.id]);
+  }, [currentTodo._id]);
 
   //Busca o centro de custo
   const useAPI = (endpoint) => {
@@ -109,12 +104,6 @@ export default function TodoForm() {
     };
     return data;
   };
-
-  // const handleDateChange = (date, dateString) => {
-  //   if (!!date) {
-  //     setTodo({ dataVencimento: dateString });
-  //   }
-  // };
 
   const validateMessages = {
     required: "${label} é obrigatório",
@@ -137,30 +126,26 @@ export default function TodoForm() {
   }, []);
 
   const handleSubmit = async (values) => {
-    const newValues = {
-      ...values,
-      dataVencimento: moment(values["dataVencimento"]).format(dateFormat),
-    };
     if (currentTodo.titulo) {
-      const reponse = await axios.patch(`${baseUrl}/todos/${currentTodo.id}`, {
-        titulo: newValues.titulo || "Sem título",
-        text: newValues.text || "Sem descrição",
-        price: newValues.price || 0,
-        tipo: newValues.tipo,
-        dataVencimento: newValues.dataVencimento,
-        centroCusto: newValues.centroCusto,
+      const reponse = await axios.patch(`${baseUrl}/todos/${currentTodo._id}`, {
+        titulo: values.titulo || "Sem título",
+        text: values.text || "Sem descrição",
+        price: values.price || 0,
+        tipo: values.tipo,
+        dataVencimento: values.dataVencimento,
+        centroCusto: values.centroCusto,
       });
       dispatch({ type: "UPDATE_TODO", payload: reponse.data });
     } else {
       const response = await axios.post(`${baseUrl}/todos/`, {
         id: uuid(),
-        titulo: newValues.titulo || "Sem título",
-        text: newValues.text || "Sem descrição",
-        price: newValues.price || 0,
+        titulo: values.titulo || "Sem título",
+        text: values.text || "Sem descrição",
+        price: values.price || 0,
         complete: false,
-        tipo: newValues.tipo,
-        dataVencimento: newValues.dataVencimento,
-        centroCusto: newValues.centroCusto,
+        tipo: values.tipo,
+        dataVencimento: values.dataVencimento,
+        centroCusto: values.centroCusto,
       });
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
@@ -248,7 +233,6 @@ export default function TodoForm() {
               <DatePicker
                 format={dateFormat}
                 placeholder="01/01/2001"
-                // onChange={handleDateChange}
                 allowClear={false}
               />
             </Form.Item>

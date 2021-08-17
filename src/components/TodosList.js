@@ -5,10 +5,10 @@ import TodosContext from "./contexts/todoContext";
 import { Table, Space, Divider } from "antd";
 import "antd/dist/antd.css";
 import baseUrl from "./globals/baseUrl";
+import moment from "moment";
 
 export default function TodoList() {
   const { state, dispatch } = useContext(TodosContext);
-  // const title = state.todos.length > 0 ? `${state.todos.length} Conta(s) a pagar regitrada(s)` : "Nenhuma conta registrada";
 
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -28,27 +28,29 @@ export default function TodoList() {
     },
     {
       title: "Vencimento",
-      dataIndex: "dataVencimento",
       key: "dataVencimento",
+      render: (text, record) => (
+        <>{moment(record.dataVencimento).format("DD/MM/YYYY")}</>
+      ),
     },
     {
       title: "Valor",
-      dataIndex: "fPrice",
+      render: (text, record) => <>{formatter.format(record.price)}</>,
       className: "column-money",
-      key: "fPrice",
+      key: "Price",
     },
 
     {
       title: "Ações",
       key: "action",
       render: (text, record) => (
-        <Space size="middle" key={record.id}>
+        <Space size="middle" key={record._id}>
           <a
             className="cursor-pointer font-medium"
             key="list-event-edit"
-            onClick={() =>
-              dispatch({ type: "SET_CURRENT_TODO", payload: record })
-            }
+            onClick={() => {
+              dispatch({ type: "SET_CURRENT_TODO", payload: record });
+            }}
           >
             Editar
           </a>
@@ -56,8 +58,11 @@ export default function TodoList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(`${baseUrl}/todos/${record.id}`);
-              dispatch({ type: "REMOVE_TODO", payload: record });
+              // await axios.delete(`${baseUrl}/todos/${record._id}`);
+              await axios.delete(`${baseUrl}/todos/`, {
+                data: { _id: record._id },
+              });
+              dispatch({ type: "REMOVE_TODO", payload: record._id });
             }}
           >
             Remover
@@ -92,7 +97,7 @@ export default function TodoList() {
       <Table
         columns={columns}
         dataSource={state.todos}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record._id}
         expandable={{
           expandedRowRender: (record) => (
             <div className="flex justify-between">
@@ -100,10 +105,15 @@ export default function TodoList() {
               <a
                 className={record.complete ? "text-red-500" : ""}
                 onClick={async () => {
-                  const response = await axios.patch(
-                    `${baseUrl}/todos/${record.id}`,
-                    { complete: !record.complete }
-                  );
+                  const newTodo = {
+                    ...record,
+                    complete: !record.complete,
+                  };
+                  const response = await axios.put(`${baseUrl}/todos`, {
+                    todo: newTodo,
+                    _id: record._id,
+                  });
+
                   dispatch({ type: "TOGGLE_TODO", payload: response.data });
                 }}
               >

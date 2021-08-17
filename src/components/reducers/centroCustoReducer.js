@@ -8,7 +8,7 @@ export default function reducer(state, action) {
     case "UPDATE_CC":
       const updatedCC = { ...action.payload };
       const updatedCCIndex = state.centroCustos.findIndex(
-        (t) => t.id === state.currentCentroCusto.id
+        (t) => t._id === state.currentCentroCusto._id
       );
       const updatedCentroCustos = [
         ...state.centroCustos.slice(0, updatedCCIndex),
@@ -33,10 +33,10 @@ export default function reducer(state, action) {
       };
     case "REMOVE_CC":
       const filteredCCs = state.centroCustos.filter(
-        (t) => t.id !== action.payload.id
+        (t) => t._id !== action.payload._id
       );
       const isRemovedCC =
-        state.currentCentroCusto.id === action.payload.id
+        state.currentCentroCusto._id === action.payload._id
           ? {}
           : state.currentCentroCusto;
       return {

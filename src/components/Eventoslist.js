@@ -21,7 +21,7 @@ export default function EventosList() {
     try {
       const todos = await axios.get(`${baseUrl}/todos`);
       const EventoTodos = todos.data.filter(
-        (todo) => todo.eventoId === event.id
+        (todo) => todo.eventoId === event._id
       );
       dispatch({ type: "SET_EVENTO_TODOS", payload: EventoTodos });
     } catch (err) {
@@ -59,7 +59,7 @@ export default function EventosList() {
                 key="list-event-delete"
                 className="text-red-500"
                 onClick={async () => {
-                  await axios.delete(`${baseUrl}/eventos/${evento.id}`);
+                  await axios.delete(`${baseUrl}/eventos/${evento._id}`);
                   dispatch({ type: "REMOVE_EVENTO", payload: evento });
                 }}
               >

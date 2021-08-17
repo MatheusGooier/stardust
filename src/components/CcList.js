@@ -23,7 +23,7 @@ export default function CcList() {
       title: "Ações",
       key: "id",
       render: (text, record) => (
-        <Space size="middle" key={record.id}>
+        <Space size="middle" key={record._id}>
           <a
             className="cursor-pointer font-medium"
             key="list-event-edit"
@@ -37,7 +37,7 @@ export default function CcList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(`${BASE_URL}/centroCustos/${record.id}`);
+              await axios.delete(`${BASE_URL}/centroCustos/${record._id}`);
               dispatch({ type: "REMOVE_CC", payload: record });
             }}
           >
@@ -53,7 +53,7 @@ export default function CcList() {
       <Table
         columns={columns}
         dataSource={state.centroCustos}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record._id}
       />
     </div>
   );

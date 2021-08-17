@@ -8,7 +8,7 @@ export default function reducer(state, action) {
     case "UPDATE_EVENTO":
       const updatedEvento = { ...action.payload };
       const updatedEventoIndex = state.eventos.findIndex(
-        (t) => t.id === state.currentEvento.id
+        (t) => t._id === state.currentEvento._id
       );
       const updatedEventos = [
         ...state.eventos.slice(0, updatedEventoIndex),
@@ -33,10 +33,12 @@ export default function reducer(state, action) {
       };
     case "REMOVE_EVENTO":
       const filteredEventos = state.eventos.filter(
-        (t) => t.id !== action.payload.id
+        (t) => t._id !== action.payload._id
       );
       const isRemovedEvento =
-        state.currentEvento.id === action.payload.id ? {} : state.currentEvento;
+        state.currentEvento._id === action.payload._id
+          ? {}
+          : state.currentEvento;
       return {
         ...state,
         currentEvento: isRemovedEvento,
@@ -48,13 +50,6 @@ export default function reducer(state, action) {
         calendarDay: action.payload,
       };
     case "SET_EVENTO_TODOS":
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "BRL",
-      });
-      action.payload.forEach((element) => {
-        element.fPrice = formatter.format(element.price);
-      });
       return {
         ...state,
         eventoTodos: action.payload,

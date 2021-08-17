@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const uri = process.env.DB_URI;
 
 const todosSchema = new mongoose.Schema({
-  // id: String,
   titulo: String,
   text: String,
   price: Number,
@@ -46,7 +45,7 @@ module.exports = function (req, res) {
       })
       .catch((error) => res.status(500).json(error.message));
   } else if (req.method === "DELETE") {
-    const { _id } = req.body;
+    const _id = req.body._id;
     Todos.findByIdAndDelete(_id)
       .then((deletedTodo) => {
         res.status(200).json(deletedTodo);

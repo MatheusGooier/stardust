@@ -1,13 +1,6 @@
 export default function reducer(state, action) {
   switch (action.type) {
     case "GET_TODOS":
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "BRL",
-      });
-      action.payload.forEach((element) => {
-        element.fPrice = formatter.format(element.price);
-      });
       return {
         ...state,
         todos: action.payload,
@@ -15,18 +8,16 @@ export default function reducer(state, action) {
 
     case "TOGGLE_TODO":
       const toggledTodos = state.todos.map((t) =>
-        t.id === action.payload.id ? action.payload : t
+        t._id === action.payload._id ? action.payload : t
       );
       return {
         ...state,
         todos: toggledTodos,
       };
     case "REMOVE_TODO":
-      const filteredTodos = state.todos.filter(
-        (t) => t.id !== action.payload.id
-      );
+      const filteredTodos = state.todos.filter((t) => t._id !== action.payload);
       const isRemovedTodo =
-        state.currentTodo.id === action.payload.id ? {} : state.currentTodo;
+        state.currentTodo._id === action.payload._id ? {} : state.currentTodo;
       return {
         ...state,
         currentTodo: isRemovedTodo,
@@ -52,7 +43,7 @@ export default function reducer(state, action) {
       // }
       const updatedTodo = { ...action.payload };
       const updatedTodoIndex = state.todos.findIndex(
-        (t) => t.id === state.currentTodo.id
+        (t) => t._id === state.currentTodo._id
       );
       const updatedTodos = [
         ...state.todos.slice(0, updatedTodoIndex),

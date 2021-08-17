@@ -68,8 +68,8 @@ export default function EventoParcelas() {
     },
     {
       title: "Valor",
-      dataIndex: "fPrice",
-      key: "fPrice",
+      dataIndex: "Price",
+      key: "Price",
     },
     {
       title: "Vencimento",
@@ -110,7 +110,7 @@ export default function EventoParcelas() {
       tipo: "Receber",
       dataVencimento: newValues.dataVencimento,
       centroCusto: [],
-      eventoId: state.currentEvento.id,
+      eventoId: state.currentEvento._id,
     });
     dispatch({ type: "ADD_EVENTO_TODOS", payload: response.data });
   };
@@ -193,7 +193,7 @@ export default function EventoParcelas() {
         <Table
           columns={columns}
           dataSource={state.eventoTodos}
-          rowKey={(record) => record.id}
+          rowKey={(record) => record._id}
         />
       </EventosContext.Provider>
     </div>

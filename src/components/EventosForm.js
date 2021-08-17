@@ -90,7 +90,7 @@ export default function EventosForm() {
 
       if (evento.titulo) {
         const reponse = await axios.patch(
-          `${baseUrl}/eventos/${currentEvento.id}`,
+          `${baseUrl}/eventos/${currentEvento._id}`,
           {
             titulo: newValues.titulo,
             dataEvento: newValues.dataEvento,
@@ -101,7 +101,6 @@ export default function EventosForm() {
         );
         dispatch({ type: "UPDATE_EVENTO", payload: reponse.data });
       } else {
-        // console.log(BASE_URL);
         const response = await axios.post(`${baseUrl}/eventos/`, {
           id: uuid(),
           titulo: newValues.titulo,
