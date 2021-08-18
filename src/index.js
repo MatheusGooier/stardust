@@ -56,7 +56,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <ThemeContext.Provider value={{ theme }}>
-        <ThemeProvider theme={theme.value === "light" ? lightTheme : darkTheme}>
+        <ThemeProvider theme={theme.value === "Light" ? lightTheme : darkTheme}>
           <>
             <GlobalStyles />
             <HeaderMenu
