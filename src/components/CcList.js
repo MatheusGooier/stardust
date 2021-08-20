@@ -37,8 +37,10 @@ export default function CcList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              await axios.delete(`${BASE_URL}/centroCustos/${record._id}`);
-              dispatch({ type: "REMOVE_CC", payload: record });
+              const response = await axios.delete(`${BASE_URL}/centroCustos/`, {
+                data: { _id: record._id },
+              });
+              dispatch({ type: "REMOVE_CC", payload: response.data });
             }}
           >
             Remover

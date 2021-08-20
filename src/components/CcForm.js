@@ -30,19 +30,27 @@ export default function CcForm() {
 
   const onFinish = async (values) => {
     if (currentCentroCusto.titulo) {
-      const reponse = await axios.patch(
-        `${BASE_URL}/centroCustos/${currentCentroCusto._id}`,
-        {
+      await axios.put(`${BASE_URL}/centroCustos/`, {
+        id: uuid(),
+        cc: {
           titulo: values.titulo,
           tipo: values.tipo,
-        }
-      );
-      dispatch({ type: "UPDATE_CC", payload: reponse.data });
+        },
+      });
+      dispatch({
+        type: "UPDATE_CC",
+        payload: {
+          titulo: values.titulo,
+          tipo: values.tipo,
+        },
+      });
     } else {
       const response = await axios.post(`${BASE_URL}/centroCustos/`, {
         id: uuid(),
-        titulo: values.titulo,
-        tipo: values.tipo,
+        cc: {
+          titulo: values.titulo,
+          tipo: values.tipo,
+        },
       });
       dispatch({ type: "ADD_CC", payload: response.data });
     }

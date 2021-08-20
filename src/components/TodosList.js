@@ -58,11 +58,10 @@ export default function TodoList() {
             className="cursor-pointer text-red-500 font-medium"
             key="list-event-delete"
             onClick={async () => {
-              // await axios.delete(`${baseUrl}/todos/${record._id}`);
-              await axios.delete(`${baseUrl}/todos/`, {
+              const response = await axios.delete(`${baseUrl}/todos/`, {
                 data: { _id: record._id },
               });
-              dispatch({ type: "REMOVE_TODO", payload: record._id });
+              dispatch({ type: "REMOVE_TODO", payload: response.data._id });
             }}
           >
             Remover

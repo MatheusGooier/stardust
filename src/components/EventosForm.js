@@ -83,31 +83,31 @@ export default function EventosForm() {
 
   const App = () => {
     const onFinish = async (values) => {
-      const newValues = {
-        ...values,
-        dataEvento: values["dataEvento"].format(dateFormat),
-      };
+      // const newValues = {
+      //   ...values,
+      //   dataEvento: values["dataEvento"].format(dateFormat),
+      // };
 
       if (evento.titulo) {
         const reponse = await axios.patch(
           `${baseUrl}/eventos/${currentEvento._id}`,
           {
-            titulo: newValues.titulo,
-            dataEvento: newValues.dataEvento,
-            text: newValues.text,
-            price: newValues.price,
-            horarioEvento: newValues.horarioEvento || "",
+            titulo: values.titulo,
+            dataEvento: values.dataEvento,
+            text: values.text,
+            price: values.price,
+            horarioEvento: values.horarioEvento || "",
           }
         );
         dispatch({ type: "UPDATE_EVENTO", payload: reponse.data });
       } else {
         const response = await axios.post(`${baseUrl}/eventos/`, {
           id: uuid(),
-          titulo: newValues.titulo,
-          text: newValues.text,
-          dataEvento: newValues.dataEvento,
-          price: newValues.price,
-          horarioEvento: newValues.horarioEvento || "",
+          titulo: values.titulo,
+          text: values.text,
+          dataEvento: values.dataEvento,
+          price: values.price,
+          horarioEvento: values.horarioEvento || "",
         });
         dispatch({ type: "ADD_EVENTO", payload: response.data });
       }

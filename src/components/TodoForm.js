@@ -74,7 +74,7 @@ export default function TodoForm() {
         price: currentTodo.price,
         complete: currentTodo.complete,
         tipo: currentTodo.tipo,
-        dataVencimento: currentTodo.dataVencimento,
+        dataVencimento: moment(currentTodo.dataVencimento),
         centroCusto: currentTodo.centroCusto,
       });
     } else {
@@ -126,14 +126,17 @@ export default function TodoForm() {
   }, []);
 
   const handleSubmit = async (values) => {
-    if (currentTodo.titulo) {
-      const reponse = await axios.patch(`${baseUrl}/todos/${currentTodo._id}`, {
-        titulo: values.titulo || "Sem título",
-        text: values.text || "Sem descrição",
-        price: values.price || 0,
-        tipo: values.tipo,
-        dataVencimento: values.dataVencimento,
-        centroCusto: values.centroCusto,
+    if (currentTodo._id) {
+      const reponse = await axios.put(`${baseUrl}/todos/`, {
+        _id: currentTodo._id,
+        todo: {
+          titulo: values.titulo || "Sem título",
+          text: values.text || "Sem descrição",
+          price: values.price || 0,
+          tipo: values.tipo,
+          dataVencimento: values.dataVencimento,
+          centroCusto: values.centroCusto,
+        },
       });
       dispatch({ type: "UPDATE_TODO", payload: reponse.data });
     } else {

@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const uri = process.env.DB_URI;
 
 const centroCustoSchema = new mongoose.Schema({
-  // id: String,
   titulo: String,
   tipo: String,
 });
