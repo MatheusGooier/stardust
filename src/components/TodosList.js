@@ -52,7 +52,7 @@ export default function TodoList() {
               dispatch({ type: "SET_CURRENT_TODO", payload: record });
             }}
           >
-            Editar
+            Selecionar
           </a>
           <a
             className="cursor-pointer text-red-500 font-medium"
@@ -71,14 +71,6 @@ export default function TodoList() {
     },
   ];
 
-  // const naoPagos = state.todos.reduce(function (sum, todo) {
-  //   return !todo.complete && todo.tipo === "Pagar" ? sum + 1 : sum;
-  // }, 0);
-
-  // const naoRecebidos = state.todos.reduce(function (sum, todo) {
-  //   return !todo.complete && todo.tipo === "Receber" ? sum + 1 : sum;
-  // }, 0);
-
   const saldo = state.todos.reduce(function (sum, todo) {
     if (todo.tipo === "Receber" && todo.complete) {
       sum = sum + parseFloat(todo.price);
@@ -87,8 +79,6 @@ export default function TodoList() {
     }
     return sum;
   }, 0);
-
-  // const footerText = `${naoPagos} contas não pagas e ${naoRecebidos} não recebidos`;
 
   return (
     <div className="container mx-auto max-w-6xl text-center font-mono p-2 mt-2">

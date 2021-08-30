@@ -31,7 +31,7 @@ export default function CcList() {
               dispatch({ type: "SET_CURRENT_CC", payload: record })
             }
           >
-            Editar
+            Selecionar
           </a>
           <a
             className="cursor-pointer text-red-500 font-medium"

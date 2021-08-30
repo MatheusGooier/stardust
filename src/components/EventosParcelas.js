@@ -21,7 +21,6 @@ import moment from "moment";
 
 export default function EventoParcelas() {
   const dateFormat = "DD/MM/YYYY";
-  // const [todo, setTodo] = useState("");
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "BRL",
@@ -31,12 +30,10 @@ export default function EventoParcelas() {
 
   const currencyParser = (val) => {
     try {
-      // for when the input gets clears
       if (typeof val === "string" && !val.length) {
         val = "0.0";
       }
 
-      // detecting and parsing between comma and dot
       var group = new Intl.NumberFormat(locale).format(1111).replace(/1/g, "");
       var decimal = new Intl.NumberFormat(locale).format(1.1).replace(/1/g, "");
       var reversedVal = val.replace(new RegExp("\\" + group, "g"), "");
@@ -95,12 +92,6 @@ export default function EventoParcelas() {
       range: "${label} must be between ${min} and ${max}",
     },
   };
-
-  // const handleDateChange = (date, dateString) => {
-  //   if (!!date) {
-  //     setTodo({ dataVencimento: dateString });
-  //   }
-  // };
 
   const onFinish = async (values) => {
     const newDate = new Date(values.dataVencimento);
@@ -186,7 +177,6 @@ export default function EventoParcelas() {
                   <DatePicker
                     format={dateFormat}
                     placeholder="01/01/2001"
-                    // onChange={handleDateChange}
                     allowClear={false}
                   />
                 </Form.Item>

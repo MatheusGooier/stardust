@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Switch, Layout, Menu } from "antd";
-// import { Avatar, Image, Switch, Layout, Menu } from "antd";
 const { Header } = Layout;
 
-// export default function Menu() {
 const HeaderMenu = (props) => {
   const [checked, setChecked] = useState(false);
 

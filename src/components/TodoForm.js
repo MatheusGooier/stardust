@@ -27,12 +27,10 @@ const dateFormat = "DD/MM/YYYY";
 
 const currencyParser = (val) => {
   try {
-    // for when the input gets clears
     if (typeof val === "string" && !val.length) {
       val = "0.0";
     }
 
-    // detecting and parsing between comma and dot
     var group = new Intl.NumberFormat(locale).format(1111).replace(/1/g, "");
     var decimal = new Intl.NumberFormat(locale).format(1.1).replace(/1/g, "");
     var reversedVal = val.replace(new RegExp("\\" + group, "g"), "");
@@ -152,7 +150,6 @@ export default function TodoForm() {
       });
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
-    // setTodo("");
   };
 
   const onchangeTipo = (value) => {

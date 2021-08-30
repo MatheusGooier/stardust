@@ -52,7 +52,6 @@ export default function CcForm() {
       });
       dispatch({ type: "ADD_CC", payload: response.data });
     }
-    // setCentroCusto("");
   };
 
   useEffect(() => {
@@ -60,7 +59,6 @@ export default function CcForm() {
       Object.keys(currentCentroCusto).length !== 0 ||
       currentCentroCusto.constructor !== Object
     ) {
-      // setCentroCusto(currentCentroCusto);
       form.setFieldsValue({
         titulo: currentCentroCusto.titulo,
         tipo: currentCentroCusto.tipo,
@@ -72,7 +70,6 @@ export default function CcForm() {
 
   const onReset = () => {
     formRef.current.resetFields();
-    // setCentroCusto("");
   };
 
   return (
@@ -114,12 +111,7 @@ export default function CcForm() {
         <Row>
           <Col span={8} offset={0}>
             <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="mr-4"
-                // onClick={handleSubmit}
-              >
+              <Button type="primary" htmlType="submit" className="mr-4">
                 Salvar
               </Button>
               <Button danger htmlType="button" onClick={onReset}>

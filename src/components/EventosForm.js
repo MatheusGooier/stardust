@@ -26,13 +26,10 @@ const { Text } = Typography;
 
 export default function EventosForm() {
   const formRef = React.createRef();
-  //Busca o dia de hoje e formata
   const dateFormat = "DD/MM/YYYY";
 
-  //Form usado nos componentes antd
   const [form] = Form.useForm();
 
-  //Criação do Evento
   const [evento, setEvento] = useState("");
   const {
     state: { currentEvento = {}, eventoTodos = [] },
@@ -45,7 +42,6 @@ export default function EventosForm() {
       currentEvento.constructor !== Object
     ) {
       setEvento(currentEvento);
-      // var momentDataEvento = moment(currentEvento.dataEvento, dateFormat);
       form.setFieldsValue({
         titulo: currentEvento.titulo,
         text: currentEvento.text,
@@ -132,12 +128,10 @@ export default function EventosForm() {
 
     const currencyParser = (val) => {
       try {
-        // for when the input gets clears
         if (typeof val === "string" && !val.length) {
           val = "0.0";
         }
 
-        // detecting and parsing between comma and dot
         var group = new Intl.NumberFormat(locale)
           .format(1111)
           .replace(/1/g, "");
@@ -278,7 +272,6 @@ export default function EventosForm() {
               </Form.Item>
             </Col>
           </Row>
-          {/* <Form.Item {...buttonItemLayout}> */}
         </Form>
         <Divider orientation="left">Registro de parcelas</Divider>
         <EventosParcelas />

@@ -63,7 +63,7 @@ export default function EventosList() {
                   CreateEventoTodos(evento);
                 }}
               >
-                Editar
+                Selecionar
               </a>,
               <a
                 key="list-event-delete"
