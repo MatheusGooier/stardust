@@ -6,7 +6,7 @@ import { uuid } from "uuidv4";
 import CentroCustoContext from "./contexts/centroCustoContext";
 import axios from "axios";
 import { Form, Input, Button, Radio, Divider, Col, Row } from "antd";
-import BASE_URL from "./globals/baseUrl";
+import baseUrl from "./globals/baseUrl";
 
 export default function CcForm() {
   const formRef = React.createRef();
@@ -30,8 +30,8 @@ export default function CcForm() {
 
   const onFinish = async (values) => {
     if (currentCentroCusto.titulo) {
-      await axios.put(`${BASE_URL}/centroCustos/`, {
-        id: uuid(),
+      await axios.put(`${baseUrl}/centroCustos/`, {
+        _id: currentCentroCusto._id,
         cc: {
           titulo: values.titulo,
           tipo: values.tipo,
@@ -45,12 +45,10 @@ export default function CcForm() {
         },
       });
     } else {
-      const response = await axios.post(`${BASE_URL}/centroCustos/`, {
+      const response = await axios.post(`${baseUrl}/centroCustos/`, {
         id: uuid(),
-        cc: {
-          titulo: values.titulo,
-          tipo: values.tipo,
-        },
+        titulo: values.titulo,
+        tipo: values.tipo,
       });
       dispatch({ type: "ADD_CC", payload: response.data });
     }

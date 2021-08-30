@@ -17,9 +17,15 @@ import axios from "axios";
 import { uuid } from "uuidv4";
 import currencyList from "./globals/currency";
 import baseUrl from "./globals/baseUrl";
+import moment from "moment";
 
 export default function EventoParcelas() {
+  const dateFormat = "DD/MM/YYYY";
   // const [todo, setTodo] = useState("");
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "BRL",
+  });
 
   const { state, dispatch } = useContext(EventosContext);
 
@@ -50,7 +56,6 @@ export default function EventoParcelas() {
   };
 
   const formRef = React.createRef();
-  const dateFormat = "DD/MM/YYYY";
   const [form] = Form.useForm();
 
   const currencyFormatter = (selectedCurrOpt) => (value) => {
@@ -68,12 +73,14 @@ export default function EventoParcelas() {
     },
     {
       title: "Valor",
-      dataIndex: "Price",
-      key: "Price",
+      render: (record) => <>{formatter.format(record.price)}</>,
+      key: "price",
     },
     {
       title: "Vencimento",
-      dataIndex: "dataVencimento",
+      render: (record) => (
+        <>{moment(record.dataVencimento).format(dateFormat)}</>
+      ),
       key: "dataVencimento",
     },
   ];
@@ -96,22 +103,27 @@ export default function EventoParcelas() {
   // };
 
   const onFinish = async (values) => {
-    const newValues = {
-      ...values,
-      dataVencimento: values["dataVencimento"].format(dateFormat),
-    };
-
+    const newDate = new Date(values.dataVencimento);
+    const dataVencimento = new Date(
+      newDate.getFullYear(),
+      newDate.getMonth(),
+      newDate.getDate(),
+      0,
+      0,
+      0
+    );
     const response = await axios.post(`${baseUrl}/todos/`, {
       id: uuid(),
-      titulo: newValues.titulo,
-      text: newValues.text || "",
-      price: newValues.price,
+      titulo: values.titulo,
+      text: values.text || "Sem descrição",
+      price: values.price,
       complete: false,
       tipo: "Receber",
-      dataVencimento: newValues.dataVencimento,
-      centroCusto: [],
+      dataVencimento: dataVencimento,
+      centroCusto: values.centroCusto || [],
       eventoId: state.currentEvento._id,
     });
+
     dispatch({ type: "ADD_EVENTO_TODOS", payload: response.data });
   };
 

@@ -146,7 +146,7 @@ export default function TodoForm() {
         text: values.text || "Sem descrição",
         price: values.price || 0,
         complete: false,
-        tipo: values.tipo,
+        tipo: values.tipo || [],
         dataVencimento: values.dataVencimento,
         centroCusto: values.centroCusto,
       });

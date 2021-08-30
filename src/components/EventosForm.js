@@ -45,13 +45,15 @@ export default function EventosForm() {
       currentEvento.constructor !== Object
     ) {
       setEvento(currentEvento);
-      var momentDataEvento = moment(currentEvento.dataEvento, dateFormat);
+      // var momentDataEvento = moment(currentEvento.dataEvento, dateFormat);
       form.setFieldsValue({
         titulo: currentEvento.titulo,
         text: currentEvento.text,
         price: currentEvento.price,
-        dataEvento: momentDataEvento,
-        horarioEvento: moment(currentEvento.horarioEvento),
+        dataEvento: moment(currentEvento.dataEvento),
+        horarioEvento: currentEvento.dataEvento
+          ? moment(currentEvento.dataEvento)
+          : "",
       });
     } else {
       onReset();
@@ -83,29 +85,37 @@ export default function EventosForm() {
 
   const App = () => {
     const onFinish = async (values) => {
-      // const newValues = {
-      //   ...values,
-      //   dataEvento: values["dataEvento"].format(dateFormat),
-      // };
+      const newDate = new Date(values.dataEvento);
+      const dataEvento = new Date(
+        newDate.getFullYear(),
+        newDate.getMonth(),
+        newDate.getDate(),
+        0,
+        0,
+        0
+      );
 
-      if (evento.titulo) {
-        const reponse = await axios.patch(
-          `${baseUrl}/eventos/${currentEvento._id}`,
-          {
+      if (
+        Object.keys(currentEvento).length !== 0 ||
+        currentEvento.constructor !== Object
+      ) {
+        const reponse = await axios.put(`${baseUrl}/eventos/`, {
+          _id: currentEvento._id,
+          evento: {
             titulo: values.titulo,
-            dataEvento: values.dataEvento,
+            dataEvento: dataEvento,
             text: values.text,
             price: values.price,
             horarioEvento: values.horarioEvento || "",
-          }
-        );
+          },
+        });
         dispatch({ type: "UPDATE_EVENTO", payload: reponse.data });
       } else {
         const response = await axios.post(`${baseUrl}/eventos/`, {
           id: uuid(),
           titulo: values.titulo,
           text: values.text,
-          dataEvento: values.dataEvento,
+          dataEvento: dataEvento,
           price: values.price,
           horarioEvento: values.horarioEvento || "",
         });

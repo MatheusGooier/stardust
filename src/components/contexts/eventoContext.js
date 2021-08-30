@@ -3,7 +3,7 @@ import React from "react";
 const EventosContext = React.createContext({
   eventos: [],
   currentEvento: {},
-  calendarDay: "",
+  calendarDay: new Date(),
   eventoTodos: [],
 });
 

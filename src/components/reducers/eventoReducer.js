@@ -47,7 +47,7 @@ export default function reducer(state, action) {
     case "SET_CALENDARDAY":
       return {
         ...state,
-        calendarDay: action.payload,
+        calendarDay: `${action.payload.toDate()}`,
       };
     case "SET_EVENTO_TODOS":
       return {

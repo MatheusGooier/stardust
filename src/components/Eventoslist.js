@@ -5,15 +5,25 @@ import EventosContext from "./contexts/eventoContext";
 import axios from "axios";
 import returnStrDateFromObj from "./globals/returnStrDateFromObj";
 import baseUrl from "./globals/baseUrl";
+import moment from "moment";
 
 export default function EventosList() {
   const { state, dispatch } = useContext(EventosContext);
+  const dateFormat = "DD/MM/YYYY";
+
+  const datesAreOnSameDay = (first, second) =>
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate();
 
   const eventosByDate = state.eventos.filter(function (evento) {
     if (state.calendarDay === "") {
       return evento.dataEvento === returnStrDateFromObj();
     } else {
-      return evento.dataEvento === state.calendarDay;
+      return datesAreOnSameDay(
+        new Date(state.calendarDay),
+        new Date(evento.dataEvento)
+      );
     }
   });
 
@@ -39,7 +49,7 @@ export default function EventosList() {
         header={
           <Divider orientation="left">
             Lista de eventos para o dia selecionado
-            {/* <span> {state.calendarDay}</span> */}
+            <span> {moment(state.calendarDay).format(dateFormat)}</span>
           </Divider>
         }
         renderItem={(evento) => (
@@ -59,8 +69,10 @@ export default function EventosList() {
                 key="list-event-delete"
                 className="text-red-500"
                 onClick={async () => {
-                  await axios.delete(`${baseUrl}/eventos/${evento._id}`);
-                  dispatch({ type: "REMOVE_EVENTO", payload: evento });
+                  const response = await axios.delete(`${baseUrl}/eventos/`, {
+                    data: { _id: evento._id },
+                  });
+                  dispatch({ type: "REMOVE_EVENTO", payload: response.data });
                 }}
               >
                 Remover
