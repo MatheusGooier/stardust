@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import CentroCustoContext from "./contexts/centroCustoContext";
-import centroCustoReducer from "./reducers/centroCustoReducer";
+import CentroCustoContext from "../contexts/centroCustoContext";
+import centroCustoReducer from "../reducers/centroCustoReducer";
 import CcList from "./CcList";
 import CcForm from "./CcForm";
 import axios from "axios";
-import BASE_URL from "./globals/baseUrl";
+import BASE_URL from "../globals/baseUrl";
 
 export default function ccPage() {
   const useAPI = (endpoint) => {

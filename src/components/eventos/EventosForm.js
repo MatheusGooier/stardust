@@ -16,11 +16,11 @@ import {
   Typography,
 } from "antd";
 import moment from "moment";
-import EventosContext from "./contexts/eventoContext";
-import currencyList from "./globals/currency";
-import locale from "./globals/locale";
+import EventosContext from "../contexts/eventoContext";
+import currencyList from "../globals/currency";
+import locale from "../globals/locale";
 import EventosParcelas from "./EventosParcelas";
-import baseUrl from "./globals/baseUrl";
+import baseUrl from "../globals/baseUrl";
 
 const { Text } = Typography;
 

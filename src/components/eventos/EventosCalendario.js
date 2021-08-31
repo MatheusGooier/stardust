@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Calendar, Alert, Divider, Col } from "antd";
-import EventosContext from "./contexts/eventoContext";
+import EventosContext from "../contexts/eventoContext";
 
 export default function EventosCalendario() {
   const { state, dispatch } = useContext(EventosContext);

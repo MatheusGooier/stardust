@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
-import TodosContext from "./contexts/todoContext";
-import todosReducer from "./reducers/todoReducer";
+import TodosContext from "../contexts/todoContext";
+import todosReducer from "../reducers/todoReducer";
 import TodoList from "./TodosList";
 import TodoForm from "./TodoForm";
-import baseUrl from "./globals/baseUrl";
+import baseUrl from "../globals/baseUrl";
 
 export default function TodoPage() {
   const useAPI = (endpoint) => {

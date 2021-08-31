@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from "axios";
 import React, { useContext } from "react";
-import TodosContext from "./contexts/todoContext";
+import TodosContext from "../contexts/todoContext";
 import { Table, Space, Divider } from "antd";
 import "antd/dist/antd.css";
-import baseUrl from "./globals/baseUrl";
+import baseUrl from "../globals/baseUrl";
 import moment from "moment";
 
 export default function TodoList() {

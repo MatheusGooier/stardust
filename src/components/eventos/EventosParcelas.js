@@ -11,12 +11,12 @@ import {
   DatePicker,
   Divider,
 } from "antd";
-import EventosContext from "./contexts/eventoContext";
-import locale from "./globals/locale";
+import EventosContext from "../contexts/eventoContext";
+import locale from "../globals/locale";
 import axios from "axios";
 import { uuid } from "uuidv4";
-import currencyList from "./globals/currency";
-import baseUrl from "./globals/baseUrl";
+import currencyList from "../globals/currency";
+import baseUrl from "../globals/baseUrl";
 import moment from "moment";
 
 export default function EventoParcelas() {

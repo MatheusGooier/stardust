@@ -3,10 +3,10 @@
 import React from "react";
 import { useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
-import CentroCustoContext from "./contexts/centroCustoContext";
+import CentroCustoContext from "../contexts/centroCustoContext";
 import axios from "axios";
 import { Form, Input, Button, Radio, Divider, Col, Row } from "antd";
-import baseUrl from "./globals/baseUrl";
+import baseUrl from "../globals/baseUrl";
 
 export default function CcForm() {
   const formRef = React.createRef();

@@ -2,11 +2,11 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import EventosCalendario from "./EventosCalendario";
 import EventosForm from "./EventosForm";
-import eventosReducer from "./reducers/eventoReducer";
+import eventosReducer from "../reducers/eventoReducer";
 import EventosList from "./Eventoslist";
 import axios from "axios";
-import EventosContext from "./contexts/eventoContext";
-import baseUrl from "./globals/baseUrl";
+import EventosContext from "../contexts/eventoContext";
+import baseUrl from "../globals/baseUrl";
 
 export default function EventosPage() {
   const useAPI = (endpoint) => {

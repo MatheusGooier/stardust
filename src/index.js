@@ -1,9 +1,9 @@
 import React, { useContext, useReducer } from "react";
 import ReactDOM from "react-dom";
-import TodoPage from "./components/TodoPage";
+import TodoPage from "./components/todo/TodoPage";
 import Login from "./components/Login";
-import CcPage from "./components/CcPage";
-import EventosPage from "./components/EventosPage";
+import CcPage from "./components/centroCusto/CcPage";
+import EventosPage from "./components/eventos/EventosPage";
 import HeaderMenu from "./components/HeaderMenu";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./theme";

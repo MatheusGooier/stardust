@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from "react";
 import { List, Divider, Button, Col } from "antd";
-import EventosContext from "./contexts/eventoContext";
+import EventosContext from "../contexts/eventoContext";
 import axios from "axios";
-import returnStrDateFromObj from "./globals/returnStrDateFromObj";
-import baseUrl from "./globals/baseUrl";
+import returnStrDateFromObj from "../globals/returnStrDateFromObj";
+import baseUrl from "../globals/baseUrl";
 import moment from "moment";
 
 export default function EventosList() {

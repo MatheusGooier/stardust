@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import axios from "axios";
 import React, { useContext } from "react";
-import CentroCustoContext from "./contexts/centroCustoContext";
+import CentroCustoContext from "../contexts/centroCustoContext";
 import { Table, Space, Divider } from "antd";
-import BASE_URL from "./globals/baseUrl";
+import BASE_URL from "../globals/baseUrl";
 
 export default function CcList() {
   const { state, dispatch } = useContext(CentroCustoContext);

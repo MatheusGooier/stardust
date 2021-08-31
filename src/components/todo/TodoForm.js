@@ -3,7 +3,7 @@
 import { useState, useContext, useEffect } from "react";
 import { uuid } from "uuidv4";
 import React from "react";
-import TodosContext from "./contexts/todoContext";
+import TodosContext from "../contexts/todoContext";
 import axios from "axios";
 import {
   Button,
@@ -17,10 +17,10 @@ import {
   Checkbox,
   Radio,
 } from "antd";
-import locale from "./globals/locale";
+import locale from "../globals/locale";
 import moment from "moment";
-import currencyList from "./globals/currency";
-import baseUrl from "./globals/baseUrl";
+import currencyList from "../globals/currency";
+import baseUrl from "../globals/baseUrl";
 
 let selectedTipo = "Pagar";
 const dateFormat = "DD/MM/YYYY";
