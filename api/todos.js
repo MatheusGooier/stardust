@@ -10,6 +10,7 @@ const todosSchema = new mongoose.Schema({
   tipo: String,
   dataVencimento: Date,
   centroCusto: Array,
+  eventoId: String,
 });
 
 const Todos = mongoose.model("Todos", todosSchema, "Todo");

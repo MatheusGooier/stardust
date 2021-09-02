@@ -90,7 +90,7 @@ export default function TodoList() {
         expandable={{
           expandedRowRender: (record) => (
             <div className="flex justify-between">
-              <p className="flex-1">{record.text}</p>
+              <p className="flex-1">Descrição: {record.text}</p>
               <a
                 className={record.complete ? "text-red-500" : ""}
                 onClick={async () => {
@@ -110,7 +110,7 @@ export default function TodoList() {
               </a>
             </div>
           ),
-          rowExpandable: (record) => record.text !== "",
+          rowExpandable: (record) => record !== null,
         }}
         rowClassName={(record, index) =>
           record.tipo === "Pagar"

@@ -180,51 +180,6 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.text};
   }
 
-  .ant-radio-button-wrapper > .ant-radio-button { 
-    background-color:  ${({ theme }) => theme.inputBackgroundColor};
-    color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper  {
-    background-color:  ${({ theme }) => theme.inputBackgroundColor};
-    color: ${({ theme }) => theme.text};
-    transition: none;
-    border: 1px solid ${({ theme }) => theme.buttonBorder};
-  }
-
-  .ant-radio-button-wrapper:first-child{
-    border-left: 1px solid ${({ theme }) => theme.buttonBorder};
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-    color: ${({ theme }) => theme.text};
-    border-color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-    border-color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
-    background-color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
-    border-color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
-    border-right-color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper:hover {
-    color: ${({ theme }) => theme.text};
-  }
-
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
-    background-color: ${({ theme }) => theme.text};
-  }
-
   .ant-switch-checked{
     background-color: ${({ theme }) => theme.switchBg};
   }
@@ -249,5 +204,63 @@ export const GlobalStyles = createGlobalStyle`
   .footer {
     position: fixed;
     bottom: 0px;
+  }
+  
+  
+
+  
+  
+  .ant-radio-button-wrapper > .ant-radio-button { 
+    background-color:  ${({ theme }) => theme.inputBackgroundColor};
+    color: ${({ theme }) => theme.radioButtonText};
+  }
+
+  .ant-radio-button-wrapper  {
+    background-color:  ${({ theme }) => theme.inputBackgroundColor};
+    color: ${({ theme }) => theme.radioButtonText};
+    transition: none;
+    border: 1px solid ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper:first-child{
+    border-left: 1px solid ${({ theme }) => theme.buttonBorder};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: ${({ theme }) => theme.radioButtonText};
+    border-color: ${({ theme }) => theme.radioButtonBorderSel};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: ${({ theme }) => theme.radioButtonBorderSel};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+    border-color: ${({ theme }) => theme.radioButtonBorderSel};
+  }
+
+  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+    border-right-color: ${({ theme }) => theme.radioButtonBorderSel};
+  }
+
+  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child:hover{
+    border-right-color: ${({ theme }) => theme.radioButtonBorderHover};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    border-color: ${({ theme }) => theme.radioButtonBorderHover};
+    color: ${({ theme }) => theme.radioButtonTextHover}
+  }
+
+  .ant-radio-button-wrapper:hover {
+    color: ${({ theme }) => theme.radioButtonTextHover};
+  }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
+    background-color: ${({ theme }) => theme.radioButtonBorderHover};
+  }
+
+  .ant-radio-button-wrapper:not(:first-child)::before{
+    opacity: 0;
   }
   `;

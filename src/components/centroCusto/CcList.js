@@ -50,7 +50,7 @@ export default function CcList() {
     },
   ];
   return (
-    <div className="container mx-auto max-w-6xl text-center font-mono rounded mt-2">
+    <div className="container mx-auto max-w-6xl text-center font-mono rounded p-2 mt-2">
       <Divider orientation="left">Tabela de Centro de Custo</Divider>
       <Table
         columns={columns}

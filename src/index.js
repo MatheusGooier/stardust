@@ -21,7 +21,7 @@ const App = () => {
   const [theme, dispatch] = useReducer(themeReducer, themeInitialState);
 
   const handleThemeChange = (checked) => {
-    dispatch({ type: "TOGGLE_THEME", payload: checked });
+    dispatch({ type: "TOGGLE_THEME", payload: !checked });
   };
 
   // withTitle function

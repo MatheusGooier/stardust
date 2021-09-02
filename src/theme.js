@@ -16,6 +16,10 @@ export const lightTheme = {
   buttonBorder: "#292524",
   switchBg: "#78716C",
   footerBg: "rgba(229,231,235,var(--tw-bg-opacity))",
+  radioButtonBorderSel: "#1890ff",
+  radioButtonBorderHover: "#1890ff",
+  radioButtonTextHover: "#1890ff",
+  radioButtonText: "#363537",
 };
 
 export const darkTheme = {
@@ -36,4 +40,8 @@ export const darkTheme = {
   buttonBorder: "#777",
   switchBg: "#78716C",
   footerBg: "rgba(31,41,55,var(--tw-bg-opacity))",
+  radioButtonBorderSel: "#FAFAFA",
+  radioButtonBorderHover: "#FAFAFA",
+  radioButtonTextHover: "#1890ff",
+  radioButtonText: "rgba(255, 255, 255, 0.65)",
 };

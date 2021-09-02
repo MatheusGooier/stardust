@@ -49,8 +49,7 @@ const HeaderMenu = (props) => {
           checked={props.themeChecked}
           onChange={() => {
             handleChange();
-
-            props.handleThemeChange(!checked);
+            props.handleThemeChange(checked);
           }}
           checkedChildren="Dark"
           unCheckedChildren="Light"

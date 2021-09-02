@@ -22,7 +22,6 @@ import moment from "moment";
 import currencyList from "../globals/currency";
 import baseUrl from "../globals/baseUrl";
 
-let selectedTipo = "Pagar";
 const dateFormat = "DD/MM/YYYY";
 
 const currencyParser = (val) => {
@@ -64,30 +63,6 @@ export default function TodoForm() {
     dispatch,
   } = useContext(TodosContext);
 
-  useEffect(() => {
-    if (currentTodo._id) {
-      form.setFieldsValue({
-        titulo: currentTodo.titulo,
-        text: currentTodo.text,
-        price: currentTodo.price,
-        complete: currentTodo.complete,
-        tipo: currentTodo.tipo,
-        dataVencimento: moment(currentTodo.dataVencimento),
-        centroCusto: currentTodo.centroCusto,
-      });
-    } else {
-      form.setFieldsValue({
-        titulo: null,
-        text: null,
-        price: null,
-        complete: null,
-        tipo: "Pagar",
-        dataVencimento: moment(),
-        centroCusto: null,
-      });
-    }
-  }, [currentTodo._id]);
-
   //Busca o centro de custo
   const useAPI = (endpoint) => {
     const [data, setData] = useState([]);
@@ -103,6 +78,36 @@ export default function TodoForm() {
     return data;
   };
 
+  const savedCentroCustos = useAPI(`${baseUrl}/centroCustos`);
+
+  const [selectedTipo, setSelectedTipo] = useState("");
+  const [filteredCcs, setFilteredCcs] = useState([]);
+
+  useEffect(() => {
+    if (currentTodo._id) {
+      form.setFieldsValue({
+        titulo: currentTodo.titulo,
+        text: currentTodo.text,
+        price: currentTodo.price,
+        complete: currentTodo.complete,
+        tipo: currentTodo.tipo,
+        dataVencimento: moment(currentTodo.dataVencimento),
+        centroCusto: currentTodo.centroCusto,
+      });
+      setSelectedTipo(currentTodo.tipo);
+    } else {
+      form.setFieldsValue({
+        titulo: null,
+        text: null,
+        price: null,
+        complete: null,
+        tipo: "",
+        dataVencimento: moment(),
+        centroCusto: null,
+      });
+    }
+  }, [currentTodo._id]);
+
   const validateMessages = {
     required: "${label} é obrigatório",
     types: {
@@ -114,22 +119,26 @@ export default function TodoForm() {
     },
   };
 
-  const savedCentroCustos = useAPI(`${baseUrl}/centroCustos`);
+  useEffect(() => {
+    setFilteredCcs(returnFilteredCcs(selectedTipo));
+  }, [selectedTipo]);
 
-  const filteredCc = savedCentroCustos.reduce(function (addCC, cc) {
-    if (cc.tipo === selectedTipo) {
-      addCC.push(cc.titulo);
-    }
-    return addCC;
-  }, []);
+  function returnFilteredCcs(tipo) {
+    return savedCentroCustos.reduce(function (addCC, cc) {
+      if (cc.tipo === tipo) {
+        addCC.push(cc.titulo);
+      }
+      return addCC;
+    }, []);
+  }
 
   const handleSubmit = async (values) => {
     if (currentTodo._id) {
       const reponse = await axios.put(`${baseUrl}/todos/`, {
         _id: currentTodo._id,
         todo: {
-          titulo: values.titulo || "Sem título",
-          text: values.text || "Sem descrição",
+          titulo: values.titulo || "",
+          text: values.text || "",
           price: values.price || 0,
           tipo: values.tipo,
           dataVencimento: values.dataVencimento,
@@ -140,8 +149,8 @@ export default function TodoForm() {
     } else {
       const response = await axios.post(`${baseUrl}/todos/`, {
         id: uuid(),
-        titulo: values.titulo || "Sem título",
-        text: values.text || "Sem descrição",
+        titulo: values.titulo || "",
+        text: values.text || "",
         price: values.price || 0,
         complete: false,
         tipo: values.tipo || [],
@@ -150,10 +159,6 @@ export default function TodoForm() {
       });
       dispatch({ type: "ADD_TODO", payload: response.data });
     }
-  };
-
-  const onchangeTipo = (value) => {
-    selectedTipo = value.target.value;
   };
 
   const onReset = () => {
@@ -189,7 +194,7 @@ export default function TodoForm() {
               rules={[{ required: true }]}
               form={form}
             >
-              <Input placeholder="Nome do título" />
+              <Input placeholder="Nome do título financeiro" />
             </Form.Item>
           </Col>
         </Row>
@@ -198,7 +203,7 @@ export default function TodoForm() {
             <Form.Item label="Descrição" name="text" form={form}>
               <Input.TextArea
                 rows="2"
-                placeholder="Detalhes sobre o título"
+                placeholder="Detalhes sobre o título financeiro"
                 className="flex-1 border-grey border-solid border-2 mr-2 p-1 w-full"
               />
             </Form.Item>
@@ -242,9 +247,13 @@ export default function TodoForm() {
               name="tipo"
               label="Tipo da Conta"
               id="groupcheckboxTipo"
-              rules={[{ required: true, message: "Please pick an item!" }]}
+              rules={[{ required: true }]}
             >
-              <Radio.Group onChange={onchangeTipo}>
+              <Radio.Group
+                onChange={(value) => {
+                  setSelectedTipo(value.target.value);
+                }}
+              >
                 <Radio.Button value="Pagar">Pagar</Radio.Button>
                 <Radio.Button value="Receber">Receber</Radio.Button>
               </Radio.Group>
@@ -252,7 +261,7 @@ export default function TodoForm() {
           </Col>
         </Row>
         <Form.Item name="centroCusto" label="Centro de custo">
-          <Checkbox.Group options={filteredCc}></Checkbox.Group>
+          <Checkbox.Group options={filteredCcs}></Checkbox.Group>
         </Form.Item>
         <Col span={8} offset={0}>
           <Form.Item>

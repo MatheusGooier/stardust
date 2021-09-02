@@ -103,16 +103,17 @@ export default function EventoParcelas() {
       0,
       0
     );
+
     const response = await axios.post(`${baseUrl}/todos/`, {
       id: uuid(),
       titulo: values.titulo,
-      text: values.text || "Sem descrição",
+      text: values.text || "",
       price: values.price,
       complete: false,
       tipo: "Receber",
       dataVencimento: dataVencimento,
-      centroCusto: values.centroCusto || [],
       eventoId: state.currentEvento._id,
+      centroCusto: values.centroCusto || [],
     });
 
     dispatch({ type: "ADD_EVENTO_TODOS", payload: response.data });
